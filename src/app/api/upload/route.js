@@ -24,13 +24,7 @@ export async function POST(req) {
     const buffer = Buffer.concat(chunks);
 
     const bucket = process.env.BUCKET_;
-    console.log({
-      Bucket: bucket,
-      Key: newFileName,
-      ACL: 'public-read',
-      ContentType: file.type,
-      Body: buffer,
-    })
+
     await s3Client.send(new PutObjectCommand({
       Bucket: bucket,
       Key: newFileName,

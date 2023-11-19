@@ -5,7 +5,6 @@ export default function AddressInputs({addressProps,setAddressProp,disabled=fals
   const {data:profileData} = useProfile();
   const {phone, streetAddress, number, neighborhood, complement} = addressProps;
   function changeValues () {
-    console.log(setChangeValues)
     if (typeof setChangeValues === 'undefined' || setChangeValues === null) {
       return
     }

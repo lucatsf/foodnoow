@@ -1,5 +1,5 @@
 import {companyOfUser, isAdmin} from "@/app/api/auth/[...nextauth]/route";
-import ServiceCategory from "@/services/Category";
+import CategoryService from "@/services/CategoryService";
 
 export async function POST(req) {
   const {name} = await req.json();
@@ -8,7 +8,7 @@ export async function POST(req) {
   }
   if (await isAdmin()) {
     const company_id = await companyOfUser();
-    const db = new ServiceCategory();
+    const db = new CategoryService();
     const result = await db.create({name, company_id});
     return Response.json(result);
   }
@@ -21,7 +21,7 @@ export async function PUT(req) {
   }
   if (await isAdmin()) {
     const company_id = await companyOfUser();
-    const db = new ServiceCategory();
+    const db = new CategoryService();
     const result = await db.update({id, name, company_id});
     return Response.json(result);
   }
@@ -29,7 +29,7 @@ export async function PUT(req) {
 }
 
 export async function GET() {
-  const db = new ServiceCategory();
+  const db = new CategoryService();
   const result = await db.getAll();
   return Response.json(result);
 }
@@ -41,7 +41,7 @@ export async function DELETE(req) {
     throw new Error('Id is required');
   }
   if (await isAdmin()) {
-    const db = new ServiceCategory();
+    const db = new CategoryService();
     await db.delete(id);
     return Response.json(true);
   }

@@ -1,4 +1,5 @@
 import {model, models, Schema} from "mongoose";
+import dynamoose from '@/libs/DynamoConnect';
 
 const CompanySchema = new Schema({
   name: {type:String, required:true},
@@ -15,3 +16,38 @@ const CompanySchema = new Schema({
 }, {timestamps: true});
 
 export const Company = models?.Company || model('Company', CompanySchema);
+
+const schema = new dynamoose.Schema({
+  id: {
+    type: String,
+    index: true
+  },
+  name: {
+    type: String,
+    required: true,
+    index: true
+  },
+  slug: {
+    type: String,
+    required: true,
+    index: true
+  },
+  image: String,
+  cnpj: {
+    type: String,
+    required: true,
+    index: true
+  },
+  phone: String,
+  address: String,
+  neighborhood: String,
+  number: String,
+  complement: String,
+  city: String,
+  state: String,
+}, {
+    saveUnknown: true,
+    timestamps: true
+});
+
+export const CompanyT = dynamoose.model('Company', schema);

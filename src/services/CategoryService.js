@@ -1,7 +1,7 @@
 import { Category } from "@/models/Category";
 import { v4 as uuidv4 } from 'uuid';
 
-export default class ServiceCategory {
+export default class CategoryService {
   constructor() {
     this.dbCategory = Category;
     this.uuid = uuidv4();

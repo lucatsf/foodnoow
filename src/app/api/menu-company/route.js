@@ -1,5 +1,5 @@
 import { Company } from "@/models/Company";
-import ServiceCategory from "@/services/Category";
+import CategoryService from "@/services/CategoryService";
 import MenuItemService from "@/services/MenuItemService";
 import mongoose from "mongoose";
 
@@ -11,7 +11,7 @@ export async function GET(req) {
 
   if (slug) {
     const company = await Company.findOne({slug});
-    const dbCategory = new ServiceCategory();
+    const dbCategory = new CategoryService();
     const dbMenuItem = new MenuItemService();
     
     const categories = await dbCategory.find({company_id: company._id});

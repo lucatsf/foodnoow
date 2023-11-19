@@ -1,8 +1,15 @@
-import {model, models, Schema} from "mongoose";
+import dynamoose from '@/libs/DynamoConnect';
 
-const CategorySchema = new Schema({
-  name: {type:String, required:true},
-  company_id: {type:String, required:true},
-}, {timestamps: true});
+const schema = new dynamoose.Schema({
+  id: {
+    type: String,
+    index: true
+  },
+  company_id: String,
+  name: String,
+}, {
+    saveUnknown: true,
+    timestamps: true
+});
 
-export const Category = models?.Category || model('Category', CategorySchema);
+export const Category = dynamoose.model('Category', schema);

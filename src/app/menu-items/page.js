@@ -43,8 +43,8 @@ export default function MenuItemsPage() {
         <div className="grid grid-cols-3 gap-2">
           {menuItems?.length > 0 && menuItems.map(item => (
             <Link
-              key={item._id}
-              href={'/menu-items/edit/'+item._id}
+              key={item.id}
+              href={'/menu-items/edit/'+item.id}
               className="bg-gray-200 rounded-lg p-4"
             >
               <div className="relative">

@@ -28,7 +28,6 @@ export default class CategoryService {
   }
 
   async find({company_id}) {
-    company_id = company_id.toString();
     return await Category.scan('company_id').eq(company_id).exec();
   }
 }

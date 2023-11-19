@@ -11,6 +11,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'lucatsf-food-now-one.s3.amazonaws.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'https://foodnoow.vercel.app/',
+      },
     ]
   }
 }

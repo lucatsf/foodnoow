@@ -11,6 +11,7 @@ const CompanySchema = new Schema({
   city: {type:String, required:true},
   state: {type:String, required:true},
   slug: {type:String, required:true},
+  image: {type:String, required:true},
 }, {timestamps: true});
 
 export const Company = models?.Company || model('Company', CompanySchema);

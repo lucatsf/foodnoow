@@ -45,7 +45,7 @@ export default function OrderPage() {
         </div>
       </div>
       {loadingOrder && (
-        <div>Loading order...</div>
+        <div>Carregando pedido...</div>
       )}
       {order && (
         <div className="grid md:grid-cols-2 md:gap-16">
@@ -71,7 +71,6 @@ export default function OrderPage() {
               <AddressInputs
                 disabled={true}
                 addressProps={order}
-                
               />
             </div>
           </div>

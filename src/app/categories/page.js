@@ -29,7 +29,7 @@ export default function CategoriesPage() {
     const creationPromise = new Promise(async (resolve, reject) => {
       const data = {name:categoryName};
       if (editedCategory) {
-        data._id = editedCategory._id;
+        data.id = editedCategory.id;
       }
       const response = await fetch('/api/categories', {
         method: editedCategory ? 'PUT' : 'POST',
@@ -53,9 +53,9 @@ export default function CategoriesPage() {
     });
   }
 
-  async function handleDeleteClick(_id) {
+  async function handleDeleteClick(id) {
     const promise = new Promise(async (resolve, reject) => {
-      const response = await fetch('/api/categories?_id='+_id, {
+      const response = await fetch('/api/categories?id='+id, {
         method: 'DELETE',
       });
       if (response.ok) {
@@ -118,7 +118,7 @@ export default function CategoriesPage() {
         <h2 className="mt-8 text-sm text-gray-500">Existing categories</h2>
         {categories?.length > 0 && categories.map(c => (
           <div
-            key={c._id}
+            key={c.id}
             className="bg-gray-100 rounded-xl p-2 px-4 flex gap-1 mb-1 items-center">
             <div className="grow">
               {c.name}
@@ -134,7 +134,7 @@ export default function CategoriesPage() {
               </button>
               <DeleteButton
                 label="Delete"
-                onDelete={() => handleDeleteClick(c._id)} />
+                onDelete={() => handleDeleteClick(c.id)} />
             </div>
           </div>
         ))}

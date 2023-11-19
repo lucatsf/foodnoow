@@ -1,42 +1,49 @@
 import {companyOfUser, isAdmin} from "@/app/api/auth/[...nextauth]/route";
-import {Category} from "@/models/Category";
-import mongoose from "mongoose";
+import CategoryService from "@/services/CategoryService";
 
 export async function POST(req) {
-  mongoose.connect(process.env.MONGO_URL_);
   const {name} = await req.json();
+  if (!name) {
+    throw new Error('Name is required');
+  }
   if (await isAdmin()) {
     const company_id = await companyOfUser();
-    const categoryDoc = await Category.create({name, company_id});
-    return Response.json(categoryDoc);
-  } else {
-    return Response.json({});
+    const db = new CategoryService();
+    const result = await db.create({name, company_id});
+    return Response.json(result);
   }
 }
 
 export async function PUT(req) {
-  mongoose.connect(process.env.MONGO_URL_);
-  const {_id, name} = await req.json();
+  const {id, name} = await req.json();
+  if (!id || !name) {
+    throw new Error('Id and Name are required');
+  }
   if (await isAdmin()) {
     const company_id = await companyOfUser();
-    await Category.updateOne({_id}, {name, company_id});
+    const db = new CategoryService();
+    const result = await db.update({id, name, company_id});
+    return Response.json(result);
   }
   return Response.json(true);
 }
 
 export async function GET() {
-  mongoose.connect(process.env.MONGO_URL_);
-  return Response.json(
-    await Category.find()
-  );
+  const db = new CategoryService();
+  const result = await db.getAll();
+  return Response.json(result);
 }
 
 export async function DELETE(req) {
-  mongoose.connect(process.env.MONGO_URL_);
   const url = new URL(req.url);
-  const _id = url.searchParams.get('_id');
+  const id = url.searchParams.get('id');
+  if (!id) {
+    throw new Error('Id is required');
+  }
   if (await isAdmin()) {
-    await Category.deleteOne({_id});
+    const db = new CategoryService();
+    await db.delete(id);
+    return Response.json(true);
   }
   return Response.json(true);
 }

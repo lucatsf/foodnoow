@@ -1,7 +1,6 @@
 'use client';
 import DeleteButton from "@/components/DeleteButton";
 import Left from "@/components/icons/Left";
-import EditableImage from "@/components/layout/EditableImage";
 import MenuItemForm from "@/components/layout/MenuItemForm";
 import UserTabs from "@/components/layout/UserTabs";
 import {useProfile} from "@/components/UseProfile";
@@ -21,7 +20,7 @@ export default function EditMenuItemPage() {
   useEffect(() => {
     fetch('/api/menu-items').then(res => {
       res.json().then(items => {
-        const item = items.find(i => i._id === id);
+        const item = items.find(i => i.id === id);
         setMenuItem(item);
       });
     })
@@ -29,7 +28,7 @@ export default function EditMenuItemPage() {
 
   async function handleFormSubmit(ev, data) {
     ev.preventDefault();
-    data = {...data, _id:id};
+    data = {...data, id:id};
     const savingPromise = new Promise(async (resolve, reject) => {
       const response = await fetch('/api/menu-items', {
         method: 'PUT',
@@ -53,7 +52,7 @@ export default function EditMenuItemPage() {
 
   async function handleDeleteClick() {
     const promise = new Promise(async (resolve, reject) => {
-      const res = await fetch('/api/menu-items?_id='+id, {
+      const res = await fetch('/api/menu-items?id='+id, {
         method: 'DELETE',
       });
       if (res.ok)
@@ -92,7 +91,7 @@ export default function EditMenuItemPage() {
           <span>Show all menu items</span>
         </Link>
       </div>
-      <MenuItemForm menuItem={menuItem} onSubmit={handleFormSubmit} />
+      {menuItem && <MenuItemForm menuItem={menuItem} onSubmit={handleFormSubmit} /> }
       <div className="max-w-md mx-auto mt-2">
         <div className="max-w-xs ml-auto pl-4">
           <DeleteButton

@@ -15,6 +15,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'https://foodnoow.vercel.app/',
       },
+      {
+        protocol: 'http',
+        hostname: '*.dynamodb.us-east-2.amazonaws.com',
+      },
     ]
   }
 }

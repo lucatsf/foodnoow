@@ -1,19 +1,24 @@
-import mongoose, {model, models, Schema} from "mongoose";
+import dynamoose from '@/libs/DynamoConnect';
 
-const ExtraPriceSchema = new Schema({
+const schema = new dynamoose.Schema({
+  id: {
+    type: String,
+    index: true
+  },
+  company_id: {
+    type: String,
+    index: true
+  },
+  image: String,
   name: String,
-  price: Number,
+  description: String,
+  category: String,
+  basePrice: Number,
+  sizes: Array,
+  extraIngredientPrices: Array,
+}, {
+    saveUnknown: true,
+    timestamps: true
 });
 
-const MenuItemSchema = new Schema({
-  image: {type: String},
-  name: {type: String},
-  description: {type: String},
-  category: {type: mongoose.Types.ObjectId},
-  basePrice: {type: Number},
-  sizes: {type:[ExtraPriceSchema]},
-  extraIngredientPrices: {type:[ExtraPriceSchema]},
-  company_id: {type:String, required:true},
-}, {timestamps: true});
-
-export const MenuItem = models?.MenuItem || model('MenuItem', MenuItemSchema);
+export const MenuItem = dynamoose.model('MenuItem', schema);

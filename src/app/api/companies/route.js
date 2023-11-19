@@ -1,14 +1,13 @@
-import { Company } from "@/models/Company";
-import mongoose from "mongoose";
+import CompanyService from "@/services/CompanyService";
 
 export async function GET(req) {
-  mongoose.connect(process.env.MONGO_URL_);
   const url = new URL(req.url);
-  const _id = url.searchParams.get('_id');
-  if (_id) {
-    const company = await Company.findById(_id);
-    return Response.json(company);
+  const id = url.searchParams.get('id');
+  const service = new CompanyService();
+  if (id) {
+    const result = await service.find({id});
+    return Response.json(result);
   }
-  const companies = await Company.find();
-  return Response.json(companies);
+  const result = await service.getAll();
+  return Response.json(result);
 }

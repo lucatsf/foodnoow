@@ -1,43 +1,47 @@
 import {companyOfUser, isAdmin} from "@/app/api/auth/[...nextauth]/route";
-import {MenuItem} from "@/models/MenuItem";
-import mongoose from "mongoose";
+import MenuItemService from "@/services/MenuItemService";
 
 export async function POST(req) {
-  mongoose.connect(process.env.MONGO_URL_);
   const data = await req.json();
 
   if (await isAdmin()) {
     const company_id = await companyOfUser();
-    const menuItemDoc = await MenuItem.create({...data, company_id});
-    return Response.json(menuItemDoc);
+    const db = new MenuItemService();
+    const basePrice = parseFloat(data.basePrice);
+    data.basePrice = basePrice;
+    const result = await db.create({...data, company_id});
+    return Response.json(result);
   } else {
     return Response.json({});
   }
 }
 
 export async function PUT(req) {
-  mongoose.connect(process.env.MONGO_URL_);
   if (await isAdmin()) {
-    const {_id, ...data} = await req.json();
+    const {id, ...data} = await req.json();
     const company_id = await companyOfUser();
-    await MenuItem.findByIdAndUpdate(_id, {...data, company_id});
+    const db = new MenuItemService();
+    const basePrice = parseFloat(data.basePrice);
+    data.basePrice = basePrice;
+    const result = await db.update({...data, company_id, id});
+    return Response.json(result);
   }
   return Response.json(true);
 }
 
 export async function GET() {
-  mongoose.connect(process.env.MONGO_URL_);
-  return Response.json(
-    await MenuItem.find()
-  );
+  const db = new MenuItemService();
+  const result = await db.getAll();
+  return Response.json(result);
 }
 
 export async function DELETE(req) {
-  mongoose.connect(process.env.MONGO_URL_);
   const url = new URL(req.url);
-  const _id = url.searchParams.get('_id');
+  const id = url.searchParams.get('id');
   if (await isAdmin()) {
-    await MenuItem.deleteOne({_id});
+    const db = new MenuItemService();
+    await db.delete(id);
+    return Response.json(true);
   }
   return Response.json(true);
 }

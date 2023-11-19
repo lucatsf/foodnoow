@@ -5,7 +5,10 @@ const schema = new dynamoose.Schema({
     type: String,
     index: true
   },
-  company_id: String,
+  company_id: {
+    type: String,
+    index: true
+  },
   image: String,
   name: String,
   description: String,

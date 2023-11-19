@@ -26,4 +26,9 @@ export default class ServiceCategory {
   async getAll() {
     return await Category.scan().exec();
   }
+
+  async find({company_id}) {
+    company_id = company_id.toString();
+    return await Category.scan('company_id').eq(company_id).exec();
+  }
 }

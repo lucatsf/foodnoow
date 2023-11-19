@@ -19,11 +19,16 @@ export default class MenuItemService {
     return await MenuItem.update(data);
   }
 
+  async delete(id) {
+    MenuItem.delete(id);
+  }
+
   async getAll() {
     return await MenuItem.scan().exec();
   }
 
-  async delete(id) {
-    MenuItem.delete(id);
+  async find({company_id}) {
+    company_id = company_id.toString();
+    return await MenuItem.scan('company_id').eq(company_id).exec();
   }
 }

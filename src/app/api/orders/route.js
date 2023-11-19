@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import {getServerSession} from "next-auth";
 
 export async function GET(req) {
-  mongoose.connect(process.env.MONGO_URL);
+  mongoose.connect(process.env.MONGO_URL_);
 
   const session = await getServerSession(authOptions);
   const userEmail = session?.user?.email;

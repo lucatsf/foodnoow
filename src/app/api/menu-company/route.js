@@ -4,7 +4,7 @@ import { MenuItem } from "@/models/MenuItem";
 import mongoose from "mongoose";
 
 export async function GET(req) {
-  mongoose.connect(process.env.MONGO_URL);
+  mongoose.connect(process.env.MONGO_URL_);
 
   const url = new URL(req.url);
   const slug = url.searchParams.get('slug');

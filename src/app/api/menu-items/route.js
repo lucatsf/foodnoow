@@ -3,7 +3,7 @@ import {MenuItem} from "@/models/MenuItem";
 import mongoose from "mongoose";
 
 export async function POST(req) {
-  mongoose.connect(process.env.MONGO_URL);
+  mongoose.connect(process.env.MONGO_URL_);
   const data = await req.json();
 
   if (await isAdmin()) {
@@ -16,7 +16,7 @@ export async function POST(req) {
 }
 
 export async function PUT(req) {
-  mongoose.connect(process.env.MONGO_URL);
+  mongoose.connect(process.env.MONGO_URL_);
   if (await isAdmin()) {
     const {_id, ...data} = await req.json();
     const company_id = await companyOfUser();
@@ -26,14 +26,14 @@ export async function PUT(req) {
 }
 
 export async function GET() {
-  mongoose.connect(process.env.MONGO_URL);
+  mongoose.connect(process.env.MONGO_URL_);
   return Response.json(
     await MenuItem.find()
   );
 }
 
 export async function DELETE(req) {
-  mongoose.connect(process.env.MONGO_URL);
+  mongoose.connect(process.env.MONGO_URL_);
   const url = new URL(req.url);
   const _id = url.searchParams.get('_id');
   if (await isAdmin()) {

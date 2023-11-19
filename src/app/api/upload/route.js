@@ -7,10 +7,10 @@ export async function POST(req) {
     const file = data.get('file');
 
     const s3Client = new S3Client({
-      region: 'us-east-1',
+      region: 'us-east-2',
       credentials: {
-        accessKeyId: process.env.MY_AWS_ACCESS_KEY,
-        secretAccessKey: process.env.MY_AWS_SECRET_KEY,
+        accessKeyId: process.env.AWS_ACCESS_KEY_,
+        secretAccessKey: process.env.AWS_SECRET_KEY_,
       },
     });
 
@@ -23,7 +23,14 @@ export async function POST(req) {
     }
     const buffer = Buffer.concat(chunks);
 
-    const bucket = process.env.BUCKET;
+    const bucket = process.env.BUCKET_;
+    console.log({
+      Bucket: bucket,
+      Key: newFileName,
+      ACL: 'public-read',
+      ContentType: file.type,
+      Body: buffer,
+    })
     await s3Client.send(new PutObjectCommand({
       Bucket: bucket,
       Key: newFileName,

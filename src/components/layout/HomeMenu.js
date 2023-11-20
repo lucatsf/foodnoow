@@ -24,16 +24,20 @@ export default function HomeMenu() {
           <Image src={'/sallad2.png'} width={107} height={195} alt={'sallad'} />
         </div>
       </div>
-      <div className="text-center mb-4">
-        <SectionHeaders
-          subHeader={'Confira aqui'}
-          mainHeader={'Os mais pedidos'} />
-      </div>
-      <div className="grid sm:grid-cols-3 gap-4">
-        {bestSellers?.length > 0 && bestSellers.map(item => (
-          <MenuCompanyTile key={item._id} {...item} />
-        ))}
-      </div>
+      {bestSellers?.length > 0 && (
+        <>
+          <div className="text-center mb-4">
+            <SectionHeaders
+              subHeader={'Confira aqui'}
+              mainHeader={'Os mais pedidos'} />
+          </div>
+          <div className="grid sm:grid-cols-3 gap-4">
+            {bestSellers?.length > 0 && bestSellers.map(item => (
+              <MenuCompanyTile key={item._id} {...item} />
+            ))}
+          </div>
+        </>
+      )}
     </section>
   );
 }

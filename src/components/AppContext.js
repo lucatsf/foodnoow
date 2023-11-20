@@ -41,7 +41,7 @@ export function AppProvider({children, session}) {
       saveCartProductsToLocalStorage(newCartProducts);
       return newCartProducts;
     });
-    toast.success('Product removed');
+    toast.success('Produto removido do carrinho');
   }
 
   function saveCartProductsToLocalStorage(cartProducts) {

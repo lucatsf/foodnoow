@@ -1,12 +1,11 @@
 import clientPromise from "@/libs/mongoConnect";
-import {UserInfo} from "@/models/UserInfo";
 import bcrypt from "bcrypt";
-import * as mongoose from "mongoose";
-import {User} from '@/models/User';
 import NextAuth, {getServerSession} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@auth/mongodb-adapter"
+import UserService from "@/services/UserService";
+import UserInfoService from "@/services/UserInfoService";
 
 export const authOptions = {
   secret: process.env.SECRET_,
@@ -20,25 +19,29 @@ export const authOptions = {
       name: 'Credentials',
       id: 'credentials',
       credentials: {
-        username: { label: "Email", type: "email", placeholder: "test@example.com" },
-        password: { label: "Password", type: "password" },
+        email: { label: "Email", type: "text", placeholder: "test@example.com" },
+        name: { label: "Name", type: "text", placeholder: "Name" },
+        password: { label: "Password", type: "text" },
       },
       async authorize(credentials, req) {
         const email = credentials?.email;
         const password = credentials?.password;
-
-        mongoose.connect(process.env.MONGO_URL_);
-        const user = await User.findOne({email});
+        const userService = new UserService();
+        const user = await userService.find({email});
         const passwordOk = user && bcrypt.compareSync(password, user.password);
 
         if (passwordOk) {
           return user
         }
-
         return null
       }
     })
   ],
+  session: {
+    strategy: 'jwt',
+    maxAge: 1 * 24 * 60 * 60, // 1 day
+  },
+  secret: process.env.SECRET_,
 };
 
 export async function isAdmin() {
@@ -47,7 +50,8 @@ export async function isAdmin() {
   if (!userEmail) {
     return false;
   }
-  const userInfo = await UserInfo.findOne({email:userEmail});
+  const userInfoService = new UserInfoService();
+  const userInfo = await userInfoService.find({email: userEmail});
   if (!userInfo) {
     return false;
   }
@@ -60,7 +64,8 @@ export async function isRoot() {
   if (!userEmail) {
     return false;
   }
-  const userInfo = await UserInfo.findOne({email:userEmail});
+  const userInfoService = new UserInfoService();
+  const userInfo = await userInfoService.find({email: userEmail});
   if (!userInfo) {
     return false;
   }
@@ -73,7 +78,8 @@ export async function companyOfUser() {
   if (!userEmail) {
     return false;
   }
-  const userInfo = await UserInfo.findOne({email:userEmail});
+  const userInfoService = new UserInfoService();
+  const userInfo = await userInfoService.find({email: userEmail});
   if (!userInfo) {
     return false;
   }

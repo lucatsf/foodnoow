@@ -75,11 +75,11 @@ export default function CategoriesPage() {
   }
 
   if (profileLoading) {
-    return 'Loading user info...';
+    return 'Carregando informações do usuário...';
   }
 
   if (!profileData.admin) {
-    return 'Not an admin';
+    return 'Você não tem permisão para acessar esta página';
   }
 
   return (
@@ -89,7 +89,7 @@ export default function CategoriesPage() {
         <div className="flex gap-2 items-end">
           <div className="grow">
             <label>
-              {editedCategory ? 'Update category' : 'New category name'}
+              {editedCategory ? 'Editar Categoria' : 'Criar Categoria'}
               {editedCategory && (
                 <>: <b>{editedCategory.name}</b></>
               )}
@@ -101,7 +101,7 @@ export default function CategoriesPage() {
           </div>
           <div className="pb-2 flex gap-2">
             <button className="border border-primary" type="submit">
-              {editedCategory ? 'Update' : 'Create'}
+              {editedCategory ? 'Editar' : 'Criar'}
             </button>
             <button
               type="button"
@@ -109,7 +109,7 @@ export default function CategoriesPage() {
                 setEditedCategory(null);
                 setCategoryName('');
               }}>
-              Cancel
+              Cancelar
             </button>
           </div>
         </div>
@@ -130,10 +130,10 @@ export default function CategoriesPage() {
                         setCategoryName(c.name);
                       }}
               >
-                Edit
+                Editar
               </button>
               <DeleteButton
-                label="Delete"
+                label="Deletar"
                 onDelete={() => handleDeleteClick(c.id)} />
             </div>
           </div>

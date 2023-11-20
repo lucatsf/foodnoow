@@ -19,7 +19,7 @@ export default function MenuPage() {
       </div>
       <div className="grid sm:grid-cols-3 gap-2 mt-6 mb-12">
         {categories?.length > 0 && categories.map(c => (
-          <MenuItemRestaurant key={c._id} {...c} />
+          <MenuItemRestaurant key={c.id} {...c} />
         ))}
       </div>
     </section>

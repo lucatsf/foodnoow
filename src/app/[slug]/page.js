@@ -28,12 +28,12 @@ const PageOfCompany = () => {
         <SectionHeaders mainHeader={company.name} />
       </div>
       {categories?.length > 0 && categories.map(c => (
-        <div key={c._id}>
+        <div key={c.id}>
           <div className="text-center">
             <SectionHeaders mainHeader={c.name} />
           </div>
           <div className="grid sm:grid-cols-3 gap-4 mt-6 mb-12">
-            {menuItems.filter(item => item.category === c.id).map(item => (
+            {menuItems.filter(item => item.category_id === c.id).map(item => (
               <MenuItem key={item.id} {...item} />
             ))}
           </div>

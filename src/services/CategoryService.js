@@ -23,8 +23,18 @@ export default class CategoryService {
     Category.delete(id);
   }
 
-  async getAll() {
-    return await Category.scan().exec();
+  async getAll({id, company_id, name}) {
+    let search = {};
+    if (id) {
+      search.id = id;
+    }
+    if (company_id) {
+      search.company_id = company_id;
+    }
+    if (name) {
+      search.name = name;
+    }
+    return await Category.scan(search).exec();
   }
 
   async find({company_id}) {

@@ -12,7 +12,7 @@ export default function EditUserPage() {
   const {id} = useParams();
 
   useEffect(() => {
-    fetch('/api/profile?_id='+id).then(res => {
+    fetch('/api/profile?id='+id).then(res => {
       res.json().then(user => {
         setUser(user);
       });
@@ -25,7 +25,7 @@ export default function EditUserPage() {
       const res = await fetch('/api/profile', {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({...data,_id:id}),
+        body: JSON.stringify({...data,id:id}),
       });
       if (res.ok)
         resolve();

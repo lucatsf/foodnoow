@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 export default class MenuItemService {
   constructor() {
-    this.dbMenuItem = MenuItem;
     this.uuid = uuidv4();
   }
 
@@ -23,8 +22,18 @@ export default class MenuItemService {
     MenuItem.delete(id);
   }
 
-  async getAll() {
-    return await MenuItem.scan().exec();
+  async getAll({id, company_id, name}) {
+    let search = {};
+    if (id) {
+      search.id = id;
+    }
+    if (company_id) {
+      search.company_id = company_id;
+    }
+    if (name) {
+      search.name = name;
+    }
+    return await MenuItem.scan(search).exec();
   }
 
   async find({company_id}) {

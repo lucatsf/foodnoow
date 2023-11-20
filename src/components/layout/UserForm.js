@@ -60,7 +60,7 @@ export default function UserForm({user,onSave}) {
         <input
           type="email"
           disabled={true}
-          value={user.email}
+          value={user?.email}
           placeholder={'email'}
         />
         <AddressInputs
@@ -72,7 +72,7 @@ export default function UserForm({user,onSave}) {
             <label>Empresa</label>
             <select value={company} onChange={ev => setCompany(ev.target.value)}>
               {companies?.length > 0 && companies.map(c => (
-                <option key={c._id} value={c._id}>{c.name}</option>
+                <option key={c.id} value={c.id}>{c.name}</option>
               ))}
             </select>
           </div>

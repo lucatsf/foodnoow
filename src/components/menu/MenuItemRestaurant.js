@@ -21,7 +21,7 @@ export default function MenuItemRestaurant(restaurants) {
           {description}
         </p>
         <Link href={slug} className="button mt-4 bg-primary text-white rounded-full px-8 py-2">
-          <span>Entrar</span>
+          <span className="text-white">Entrar</span>
         </Link>
       </div>
     </>

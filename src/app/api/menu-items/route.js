@@ -6,10 +6,10 @@ export async function POST(req) {
 
   if (await isAdmin()) {
     const company_id = await companyOfUser();
-    const db = new MenuItemService();
+    const menuItemService = new MenuItemService();
     const basePrice = parseFloat(data.basePrice);
     data.basePrice = basePrice;
-    const result = await db.create({...data, company_id});
+    const result = await menuItemService.create({...data, company_id});
     return Response.json(result);
   } else {
     return Response.json({});
@@ -20,18 +20,25 @@ export async function PUT(req) {
   if (await isAdmin()) {
     const {id, ...data} = await req.json();
     const company_id = await companyOfUser();
-    const db = new MenuItemService();
+    const menuItemService = new MenuItemService();
     const basePrice = parseFloat(data.basePrice);
     data.basePrice = basePrice;
-    const result = await db.update({...data, company_id, id});
+    const result = await menuItemService.update({...data, company_id, id});
     return Response.json(result);
   }
   return Response.json(true);
 }
 
 export async function GET() {
-  const db = new MenuItemService();
-  const result = await db.getAll();
+  const isAdmin = await isAdmin();
+  const companyId = await companyOfUser();
+  const menuItemService = new MenuItemService();
+
+  if (isAdmin) {
+    const result = await menuItemService.getAll({ company_id: companyId});
+    return Response.json(result);
+  }
+  const result = await menuItemService.getAll();
   return Response.json(result);
 }
 
@@ -39,8 +46,8 @@ export async function DELETE(req) {
   const url = new URL(req.url);
   const id = url.searchParams.get('id');
   if (await isAdmin()) {
-    const db = new MenuItemService();
-    await db.delete(id);
+    const menuItemService = new MenuItemService();
+    await menuItemService.delete(id);
     return Response.json(true);
   }
   return Response.json(true);

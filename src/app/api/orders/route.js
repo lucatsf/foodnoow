@@ -1,5 +1,5 @@
-import {authOptions, isAdmin} from "@/app/api/auth/[...nextauth]/route";
-import {Order} from "@/models/Order";
+import {authOptions, companyOfUser, isAdmin} from "@/app/api/auth/[...nextauth]/route";
+import OrderService from "@/services/OrderService";
 import mongoose from "mongoose";
 import {getServerSession} from "next-auth";
 
@@ -9,20 +9,19 @@ export async function GET(req) {
   const session = await getServerSession(authOptions);
   const userEmail = session?.user?.email;
   const admin = await isAdmin();
+  const companyId = await companyOfUser();
 
   const url = new URL(req.url);
-  const _id = url.searchParams.get('_id');
-  if (_id) {
-    return Response.json( await Order.findById(_id) );
+  const id = url.searchParams.get('id');
+  const orderService = new OrderService();
+  if (id) {
+    return Response.json( await orderService.find({id}) );
   }
-
-
   if (admin) {
-    return Response.json( await Order.find() );
+    return Response.json( await orderService.findAll({company_id: companyId}) );
   }
-
   if (userEmail) {
-    return Response.json( await Order.find({userEmail}) );
+    return Response.json( await orderService.findAll({userEmail}) );
   }
-
+  return false;
 }

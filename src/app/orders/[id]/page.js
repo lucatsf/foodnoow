@@ -19,7 +19,7 @@ export default function OrderPage() {
     }
     if (id) {
       setLoadingOrder(true);
-      fetch('/api/orders?_id='+id).then(res => {
+      fetch('/api/orders?id='+id).then(res => {
         res.json().then(orderData => {
           setOrder(orderData);
           setLoadingOrder(false);
@@ -51,7 +51,7 @@ export default function OrderPage() {
         <div className="grid md:grid-cols-2 md:gap-16">
           <div>
             {order.cartProducts.map(product => (
-              <CartProduct key={product._id} product={product} />
+              <CartProduct key={product.id} product={product} />
             ))}
             <div className="text-right py-2 text-gray-500">
               Subtotal:

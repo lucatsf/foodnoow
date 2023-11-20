@@ -8,7 +8,7 @@ export async function POST(req) {
   }
   if (await isAdmin()) {
     const company_id = await companyOfUser();
-    const db = new CategoryService();
+    const categoryService = new CategoryService();
     const result = await db.create({name, company_id});
     return Response.json(result);
   }
@@ -29,8 +29,14 @@ export async function PUT(req) {
 }
 
 export async function GET() {
-  const db = new CategoryService();
-  const result = await db.getAll();
+  const categoryService = new CategoryService();
+  const isAdmin = await isAdmin();
+  if (isAdmin) {
+    const companyId = await companyOfUser();
+    const result = await categoryService.getAll({ company_id: companyId});
+    return Response.json(result);
+  }
+  const result = await categoryService.getAll();
   return Response.json(result);
 }
 
@@ -41,8 +47,8 @@ export async function DELETE(req) {
     throw new Error('Id is required');
   }
   if (await isAdmin()) {
-    const db = new CategoryService();
-    await db.delete(id);
+    const categoryService = new CategoryService();
+    await categoryService.delete(id);
     return Response.json(true);
   }
   return Response.json(true);

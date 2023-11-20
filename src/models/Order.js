@@ -1,6 +1,15 @@
-import {model, models, Schema} from "mongoose";
+import dynamoose from '@/libs/DynamoConnect';
 
-const OrderSchema = new Schema({
+const schema = new dynamoose.Schema({
+  id: {
+    type: String,
+    index: true
+  },
+  company_id: {
+    type:String,
+    index: true,
+    required:true
+  },
   userEmail: String,
   phone: String,
   streetAddress: String,
@@ -10,7 +19,14 @@ const OrderSchema = new Schema({
   complement: String,
   cartProducts: Object,
   paid: {type: Boolean, default: false},
-  company_id: {type:String, required:true},
-}, {timestamps: true});
+  creditCard: {type: Boolean, default: false},
+  debitCard: {type: Boolean, default: false},
+  cash: {type: Boolean, default: false},
+  change: Number,
+  delivery: {type: Boolean, default: false},
+}, {
+    saveUnknown: true,
+    timestamps: true
+});
 
-export const Order = models?.Order || model('Order', OrderSchema);
+export const Order = dynamoose.model('Order', schema);

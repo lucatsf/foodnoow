@@ -1,19 +1,18 @@
 'use client';
 import {signIn} from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useNavigation } from "next/navigation";
 import {useEffect, useState} from "react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginInProgress, setLoginInProgress] = useState(false);
-  const router = useRouter();
 
   async function handleFormSubmit(ev) {
     ev.preventDefault();
     setLoginInProgress(true);
-    
+    console.log(useNavigation)
     await signIn('credentials', {email, password, callbackUrl: '/'});
 
     setLoginInProgress(false);
@@ -33,7 +32,7 @@ export default function LoginPage() {
                onChange={ev => setPassword(ev.target.value)}/>
         <button disabled={loginInProgress} type="submit">Login</button>
         <div className="my-4 text-center text-gray-500">
-          or login with provider
+          ou login com sua conta google
         </div>
         <button type="button" onClick={() => signIn('google', {callbackUrl: '/'})}
                 className="flex gap-4 justify-center">

@@ -43,11 +43,11 @@ export default function NewMenuItemPage() {
   }
 
   if (loading) {
-    return 'Loading user info...';
+    return 'Carregando informações do usuário...';
   }
 
   if (!data.admin) {
-    return 'Not an admin.';
+    return 'Você não tem permissão para acessar esta página.';
   }
 
   return (
@@ -56,7 +56,7 @@ export default function NewMenuItemPage() {
       <div className="max-w-2xl mx-auto mt-8">
         <Link href={'/menu-items'} className="button">
           <Left />
-          <span>Show all menu items</span>
+          <span>Voltar e ver todos produtos</span>
         </Link>
       </div>
       <MenuItemForm menuItem={null} onSubmit={handleFormSubmit} />

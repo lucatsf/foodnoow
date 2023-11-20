@@ -1,38 +1,40 @@
 import {authOptions} from "@/app/api/auth/[...nextauth]/route";
-import {User} from "@/models/User";
-import {UserInfo} from "@/models/UserInfo";
-import mongoose from "mongoose";
+import { getValuesObject } from "@/libs/getValuesObject";
+import UserInfoService from "@/services/UserInfoService";
+import UserService from "@/services/UserService";
 import {getServerSession} from "next-auth";
 
 export async function PUT(req) {
-  mongoose.connect(process.env.MONGO_URL_);
   const data = await req.json();
-  const {_id, name, image, ...otherUserInfo} = data;
+  const {id, name, image, ...otherUserInfo} = data;
 
   let filter = {};
-  if (_id) {
-    filter = {_id};
+  if (id) {
+    filter = {id};
   } else {
     const session = await getServerSession(authOptions);
     const email = session.user.email;
     filter = {email};
   }
-  const user = await User.findOne(filter);
-  await User.updateOne(filter, {name, image});
-  await UserInfo.findOneAndUpdate({email:user.email}, otherUserInfo, {upsert:true});
+  const userInfoService = new UserInfoService();
+  const userService = new UserService();
+  const user = await userService.find(filter);
+  await userService.update({id: user.id, name, image});
+  const userInfo = getValuesObject({...otherUserInfo, email:user.email});
+  await userInfoService.update({
+    ...userInfo, email:user.email,
+  });
 
   return Response.json(true);
 }
 
 export async function GET(req) {
-  mongoose.connect(process.env.MONGO_URL_);
-
   const url = new URL(req.url);
-  const _id = url.searchParams.get('_id');
+  const id = url.searchParams.get('id');
 
   let filterUser = {};
-  if (_id) {
-    filterUser = {_id};
+  if (id) {
+    filterUser = {id};
   } else {
     const session = await getServerSession(authOptions);
     const email = session?.user?.email;
@@ -41,9 +43,11 @@ export async function GET(req) {
     }
     filterUser = {email};
   }
+  const userInfoService = new UserInfoService();
+  const userService = new UserService();
 
-  const user = await User.findOne(filterUser).lean();
-  const userInfo = await UserInfo.findOne({email:user.email}).lean();
+  const user = await userService.find(filterUser);
+  const userInfo = await userInfoService.find({email:user.email});
 
   return Response.json({...user, ...userInfo});
 

@@ -43,4 +43,4 @@ const schema = new dynamoose.Schema({
     timestamps: true
 });
 
-export const UserInfoT = dynamoose.model('User', schema);
+export const UserInfoT = dynamoose.model('UserInfo', schema);

@@ -29,8 +29,15 @@ export default class UserService {
     return await UserT.scan().exec();
   }
 
-  async find({email}) {
-    const result = await UserT.scan('email').eq(email).exec();
+  async find({email, id}) {
+    let search = {};
+    if (email) {
+      search.email = { eq: email };
+    }
+    if (id) {
+      search.id = { eq: id };
+    }
+    const result = await UserT.scan(search).exec();
     if (result && result.length > 0) {
       return result[0];
     }

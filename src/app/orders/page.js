@@ -34,7 +34,7 @@ export default function OrdersPage() {
         )}
         {orders?.length > 0 && orders.map(order => (
           <div
-            key={order._id}
+            key={order.id}
             className="bg-gray-100 mb-2 p-4 rounded-lg flex flex-col md:flex-row items-center gap-6">
             <div className="grow flex flex-col md:flex-row items-center gap-6">
               <div>
@@ -56,7 +56,7 @@ export default function OrdersPage() {
               </div>
             </div>
             <div className="justify-end flex gap-2 items-center whitespace-nowrap">
-              <Link href={"/orders/"+order._id} className="button">
+              <Link href={"/orders/"+order.id} className="button">
                 Show order
               </Link>
             </div>

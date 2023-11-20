@@ -75,7 +75,7 @@ export default function MenuItem(menuItem) {
                   <h3 className="text-center text-gray-700">Escolha o tamanho</h3>
                   {sizes.map(size => (
                     <label
-                      key={size._id}
+                      key={size.id}
                       className="flex items-center gap-2 p-4 border rounded-md mb-1">
                       <input
                         type="radio"
@@ -92,12 +92,12 @@ export default function MenuItem(menuItem) {
                   <h3 className="text-center text-gray-700">Extras?</h3>
                   {extraIngredientPrices.map(extraThing => (
                     <label
-                      key={extraThing._id}
+                      key={extraThing.id}
                       className="flex items-center gap-2 p-4 border rounded-md mb-1">
                       <input
                         type="checkbox"
                         onChange={ev => handleExtraThingClick(ev, extraThing)}
-                        checked={selectedExtras.map(e => e._id).includes(extraThing._id)}
+                        checked={selectedExtras.map(e => e.id).includes(extraThing.id)}
                         name={extraThing.name} />
                       {extraThing.name} +R${extraThing.price}
                     </label>

@@ -10,7 +10,7 @@ export default function MenuItemForm({onSubmit,menuItem}) {
   const [description, setDescription] = useState(menuItem?.description || '');
   const [basePrice, setBasePrice] = useState(menuItem?.basePrice || '');
   const [sizes, setSizes] = useState(menuItem?.sizes || []);
-  const [category, setCategory] = useState(menuItem?.category || '');
+  const [category, setCategory] = useState(menuItem?.category_id || '');
   const [categories, setCategories] = useState([]);
   const [
     extraIngredientPrices,
@@ -21,7 +21,7 @@ export default function MenuItemForm({onSubmit,menuItem}) {
     fetch('/api/categories').then(res => {
       res.json().then(categories => {
         setCategories(categories);
-        if (categories.length > 0) {
+        if (categories.length > 0 && category === '' || category === null) {
           setCategory(categories[0].id);
         }
       });
@@ -32,7 +32,7 @@ export default function MenuItemForm({onSubmit,menuItem}) {
     <form
       onSubmit={ev =>
         onSubmit(ev, {
-          image,name,description,basePrice,sizes,extraIngredientPrices,category,
+          image,name,description,basePrice,sizes,extraIngredientPrices,category_id:category,
         })
       }
       className="mt-8 max-w-2xl mx-auto">

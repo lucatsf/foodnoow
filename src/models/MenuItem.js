@@ -12,7 +12,7 @@ const schema = new dynamoose.Schema({
   image: String,
   name: String,
   description: String,
-  category: String,
+  category_id: String,
   basePrice: Number,
   sizes: Array,
   extraIngredientPrices: Array,

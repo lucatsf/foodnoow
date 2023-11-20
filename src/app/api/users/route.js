@@ -1,12 +1,11 @@
-import {isAdmin} from "@/app/api/auth/[...nextauth]/route";
-import {User} from "@/models/User";
-import mongoose from "mongoose";
+import {companyOfUser, isAdmin} from "@/app/api/auth/[...nextauth]/route";
+import UserService from "@/services/UserService";
 
 export async function GET() {
-  mongoose.connect(process.env.MONGO_URL_);
   if (await isAdmin()) {
-    const users = await User.find();
-    return Response.json(users);
+    const companyId = await companyOfUser();
+    const userService = new UserService();
+    return Response.json(await userService.getAll({company_id: companyId}));
   } else {
     return Response.json([]);
   }

@@ -1,13 +1,3 @@
-import {model, models, Schema} from "mongoose";
-
-const UserSchema = new Schema({
-  name: {type: String},
-  email: {type: String, required: true, unique: true},
-  password: {type: String},
-  image: {type: String},
-}, {timestamps: true});
-
-export const User = models?.User || model('User', UserSchema);
 import dynamoose from '@/libs/DynamoConnect';
 
 const schema = new dynamoose.Schema({
@@ -27,4 +17,4 @@ const schema = new dynamoose.Schema({
     timestamps: true
 });
 
-export const UserT = dynamoose.model('User', schema);
+export const User = dynamoose.model('User', schema);

@@ -101,7 +101,7 @@ export default function CategoriesPage() {
           </div>
           <div className="pb-2 flex gap-2">
             <button className="border border-primary" type="submit">
-              {editedCategory ? 'Update' : 'Create'}
+              {editedCategory ? 'Editar' : 'Criar'}
             </button>
             <button
               type="button"
@@ -109,7 +109,7 @@ export default function CategoriesPage() {
                 setEditedCategory(null);
                 setCategoryName('');
               }}>
-              Cancel
+              Cancelar
             </button>
           </div>
         </div>
@@ -130,10 +130,10 @@ export default function CategoriesPage() {
                         setCategoryName(c.name);
                       }}
               >
-                Edit
+                Editar
               </button>
               <DeleteButton
-                label="Delete"
+                label="Deletar"
                 onDelete={() => handleDeleteClick(c.id)} />
             </div>
           </div>

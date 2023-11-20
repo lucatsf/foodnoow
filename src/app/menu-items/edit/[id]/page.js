@@ -88,7 +88,7 @@ export default function EditMenuItemPage() {
       <div className="max-w-2xl mx-auto mt-8">
         <Link href={'/menu-items'} className="button">
           <Left />
-          <span>Show all menu items</span>
+          <span>Voltar e ver todos produtos</span>
         </Link>
       </div>
       {menuItem && <MenuItemForm menuItem={menuItem} onSubmit={handleFormSubmit} /> }

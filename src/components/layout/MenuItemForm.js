@@ -43,36 +43,36 @@ export default function MenuItemForm({onSubmit,menuItem}) {
           <EditableImage link={image} setLink={setImage} />
         </div>
         <div className="grow">
-          <label>Item name</label>
+          <label>Nome do produto</label>
           <input
             type="text"
             value={name}
             onChange={ev => setName(ev.target.value)}
           />
-          <label>Description</label>
+          <label>Descrição</label>
           <input
             type="text"
             value={description}
             onChange={ev => setDescription(ev.target.value)}
           />
-          <label>Category</label>
+          <label>Categoria</label>
           <select value={category} onChange={ev => setCategory(ev.target.value)}>
             {categories?.length > 0 && categories.map(c => (
               <option key={c.id} value={c.id}>{c.name}</option>
             ))}
           </select>
-          <label>Base price</label>
+          <label>Preço base</label>
           <input
             type="text"
             value={basePrice}
             onChange={ev => setBasePrice(ev.target.value)}
           />
-          <MenuItemPriceProps name={'Sizes'}
-                              addLabel={'Add item size'}
+          <MenuItemPriceProps name={'Tamanhos'}
+                              addLabel={'Adicionar tamanho'}
                               props={sizes}
                               setProps={setSizes} />
-          <MenuItemPriceProps name={'Extra ingredients'}
-                              addLabel={'Add ingredients prices'}
+          <MenuItemPriceProps name={'Acompanhamentos'}
+                              addLabel={'Adicionar acompanhamento'}
                               props={extraIngredientPrices}
                               setProps={setExtraIngredientPrices}/>
           <button type="submit">Save</button>

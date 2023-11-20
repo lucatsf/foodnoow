@@ -13,7 +13,11 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'https://foodnoow.vercel.app/',
+        hostname: 'https://foodnoow.com.br',
+      },
+      {
+        protocol: 'https',
+        hostname: 'https://foodnoow.com.br/',
       },
       {
         protocol: 'http',

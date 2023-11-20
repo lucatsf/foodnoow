@@ -75,11 +75,11 @@ export default function CategoriesPage() {
   }
 
   if (profileLoading) {
-    return 'Loading user info...';
+    return 'Carregando informações do usuário...';
   }
 
   if (!profileData.admin) {
-    return 'Not an admin';
+    return 'Você não tem permisão para acessar esta página';
   }
 
   return (
@@ -89,7 +89,7 @@ export default function CategoriesPage() {
         <div className="flex gap-2 items-end">
           <div className="grow">
             <label>
-              {editedCategory ? 'Update category' : 'New category name'}
+              {editedCategory ? 'Editar Categoria' : 'Criar Categoria'}
               {editedCategory && (
                 <>: <b>{editedCategory.name}</b></>
               )}

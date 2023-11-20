@@ -20,11 +20,11 @@ export default function MenuItemsPage() {
   }, []);
 
   if (loading) {
-    return 'Loading user info...';
+    return 'Carregando informações do usuário...';
   }
 
   if (!data.admin) {
-    return 'Not an admin.';
+    return 'Você não tem permissão para acessar esta página.';
   }
 
   return (

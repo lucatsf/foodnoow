@@ -30,7 +30,7 @@ export default function OrdersPage() {
       <UserTabs isAdmin={profile.admin} />
       <div className="mt-8">
         {loadingOrders && (
-          <div>Loading orders...</div>
+          <div>Carregando pedidos...</div>
         )}
         {orders?.length > 0 && orders.map(order => (
           <div

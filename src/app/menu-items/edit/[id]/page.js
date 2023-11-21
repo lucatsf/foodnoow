@@ -30,6 +30,36 @@ export default function EditMenuItemPage() {
     ev.preventDefault();
     data = {...data, id:id};
     const savingPromise = new Promise(async (resolve, reject) => {
+      if (
+        (!data?.name || data?.name == '')||
+        (!data.description || data.description == '') ||
+        (!data.basePrice || data.basePrice == '') ||
+        (!data.category_id || data.category_id == '')
+      ) {
+        reject('Por favor, preencha todos os campos');
+        return;
+      }
+      if (data?.sizes?.length > 0) {
+        for (const size of data.sizes) {
+          if (!size?.name || size.name == '' || !size?.price || size.price == '') {
+            reject('Por favor, preencha todos os campos de tamanho');
+            return;
+          }
+        }
+      }
+      if (data?.extraIngredientPrices?.length > 0) {
+        for (const extraIngredientPrice of data.extraIngredientPrices) {
+          if (
+            !extraIngredientPrice?.name ||
+            extraIngredientPrice.name == '' ||
+            !extraIngredientPrice?.price ||
+            extraIngredientPrice.price == ''
+          ) {
+            reject('Por favor, preencha todos os campos de acompanhamento');
+            return;
+          }
+        }
+      }
       const response = await fetch('/api/menu-items', {
         method: 'PUT',
         body: JSON.stringify(data),
@@ -38,13 +68,13 @@ export default function EditMenuItemPage() {
       if (response.ok)
         resolve();
       else
-        reject();
+        reject('Erro ao processar a requisição');
     });
 
     await toast.promise(savingPromise, {
-      loading: 'Saving this tasty item',
-      success: 'Saved',
-      error: 'Error',
+      loading: 'Salvando alterações...',
+      success: 'Salvo',
+      error: (err) => err.toString(),
     });
 
     setRedirectToItems(true);
@@ -62,8 +92,8 @@ export default function EditMenuItemPage() {
     });
 
     await toast.promise(promise, {
-      loading: 'Deleting...',
-      success: 'Deleted',
+      loading: 'Deletando...',
+      success: 'Deletado',
       error: 'Error',
     });
 

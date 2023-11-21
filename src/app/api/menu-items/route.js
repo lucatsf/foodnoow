@@ -3,7 +3,33 @@ import MenuItemService from "@/services/MenuItemService";
 
 export async function POST(req) {
   const data = await req.json();
-
+  if (
+    (!data?.name || data?.name == '')||
+    (!data.description || data.description == '') ||
+    (!data.basePrice || data.basePrice == '') ||
+    (!data.category_id || data.category_id == '')
+  ) {
+    throw new Error('Por favor, preencha todos os campos');
+  }
+  if (data?.sizes?.length > 0) {
+    for (const size of data.sizes) {
+      if (!size?.name || size.name == '' || !size?.price || size.price == '') {
+        throw new Error('Por favor, preencha todos os campos de tamanho');
+      }
+    }
+  }
+  if (data?.extraIngredientPrices?.length > 0) {
+    for (const extraIngredientPrice of data.extraIngredientPrices) {
+      if (
+        !extraIngredientPrice?.name ||
+        extraIngredientPrice.name == '' ||
+        !extraIngredientPrice?.price ||
+        extraIngredientPrice.price == ''
+      ) {
+        throw new Error('Por favor, preencha todos os campos de acompanhamento');
+      }
+    }
+  }
   if (await isAdmin()) {
     const company_id = await companyOfUser();
     const menuItemService = new MenuItemService();
@@ -20,6 +46,33 @@ export async function PUT(req) {
   if (await isAdmin()) {
     const {id, ...data} = await req.json();
     const company_id = await companyOfUser();
+    if (
+      (!data?.name || data?.name == '')||
+      (!data.description || data.description == '') ||
+      (!data.basePrice || data.basePrice == '') ||
+      (!data.category_id || data.category_id == '')
+    ) {
+      throw new Error('Por favor, preencha todos os campos');
+    }
+    if (data?.sizes?.length > 0) {
+      for (const size of data.sizes) {
+        if (!size?.name || size.name == '' || !size?.price || size.price == '') {
+          throw new Error('Por favor, preencha todos os campos de tamanho');
+        }
+      }
+    }
+    if (data?.extraIngredientPrices?.length > 0) {
+      for (const extraIngredientPrice of data.extraIngredientPrices) {
+        if (
+          !extraIngredientPrice?.name ||
+          extraIngredientPrice.name == '' ||
+          !extraIngredientPrice?.price ||
+          extraIngredientPrice.price == ''
+        ) {
+          throw new Error('Por favor, preencha todos os campos de acompanhamento');
+        }
+      }
+    }
     const menuItemService = new MenuItemService();
     const basePrice = parseFloat(data.basePrice);
     data.basePrice = basePrice;

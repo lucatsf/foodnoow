@@ -30,8 +30,7 @@ export async function PUT(req) {
 
 export async function GET() {
   const categoryService = new CategoryService();
-  const isAdmin = await isAdmin();
-  if (isAdmin) {
+  if (await isAdmin()) {
     const companyId = await companyOfUser();
     const result = await categoryService.getAll({ company_id: companyId});
     return Response.json(result);

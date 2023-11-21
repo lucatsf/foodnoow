@@ -70,8 +70,8 @@ export default function CategoriesPage() {
     });
 
     await toast.promise(promise, {
-      loading: 'Deleting...',
-      success: 'Deleted',
+      loading: 'Deletando...',
+      success: 'Deletado',
       error: 'Error',
     });
 

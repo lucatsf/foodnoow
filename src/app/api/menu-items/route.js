@@ -30,11 +30,10 @@ export async function PUT(req) {
 }
 
 export async function GET() {
-  const isAdmin = await isAdmin();
   const companyId = await companyOfUser();
   const menuItemService = new MenuItemService();
 
-  if (isAdmin) {
+  if (await isAdmin()) {
     const result = await menuItemService.getAll({ company_id: companyId});
     return Response.json(result);
   }

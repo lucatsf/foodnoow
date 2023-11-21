@@ -14,6 +14,7 @@ export default function UserForm({user,onSave}) {
   const [complement, setComplement] = useState(user?.complement || '');
   const [admin, setAdmin] = useState(user?.admin || false);
   const [company, setCompany] = useState(user?.company_id || '');
+  const [city, setCity] = useState(user?.city || '');
   const [companies, setCompanies] = useState([]);
   const {data:loggedInUserData} = useProfile();
 
@@ -23,6 +24,7 @@ export default function UserForm({user,onSave}) {
     if (propName === 'number') setNumber(value);
     if (propName === 'neighborhood') setNeighborhood(value);
     if (propName === 'complement') setComplement(value);
+    if (propName === 'city') setCity(value);
   }
 
   useEffect(() => {
@@ -44,7 +46,7 @@ export default function UserForm({user,onSave}) {
         className="grow"
         onSubmit={ev =>
           onSave(ev, {
-            name:userName, image, phone, admin,
+            name:userName, image, phone, admin, city,
             streetAddress, neighborhood, complement, number, company_id:company
           })
         }
@@ -64,7 +66,7 @@ export default function UserForm({user,onSave}) {
           placeholder={'email'}
         />
         <AddressInputs
-          addressProps={{phone, streetAddress, number, neighborhood, complement}}
+          addressProps={{phone, streetAddress, city, number, neighborhood, complement}}
           setAddressProp={handleAddressChange}
         />
         {loggedInUserData.root && (

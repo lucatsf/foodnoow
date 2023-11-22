@@ -2,6 +2,7 @@ import ChevronDown from "@/components/icons/ChevronDown";
 import ChevronUp from "@/components/icons/ChevronUp";
 import Plus from "@/components/icons/Plus";
 import Trash from "@/components/icons/Trash";
+import { formatFromMoney } from "@/libs/formatInput";
 import {useState} from "react";
 
 export default function MenuItemPriceProps({name,addLabel,props,setProps}) {
@@ -56,7 +57,7 @@ export default function MenuItemPriceProps({name,addLabel,props,setProps}) {
             <div>
               <label>Extra price</label>
               <input type="text" placeholder="Extra price"
-                     value={size.price}
+                     value={formatFromMoney(size.price)}
                      onChange={ev => editProp(ev, index, 'price')}
               />
             </div>

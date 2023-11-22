@@ -4,6 +4,7 @@ import Left from "@/components/icons/Left";
 import MenuItemForm from "@/components/layout/MenuItemForm";
 import UserTabs from "@/components/layout/UserTabs";
 import {useProfile} from "@/components/UseProfile";
+import { getValueMoney } from "@/libs/formatInput";
 import Link from "next/link";
 import {redirect, useParams} from "next/navigation";
 import {useEffect, useState} from "react";
@@ -60,6 +61,13 @@ export default function EditMenuItemPage() {
           }
         }
       }
+      for (const size of data.sizes) {
+        size.price = getValueMoney(size.price);
+      }
+      for (const extraIngredientPrice of data.extraIngredientPrices) {
+        extraIngredientPrice.price = getValueMoney(extraIngredientPrice.price);
+      }
+      data.basePrice = getValueMoney(data.basePrice);
       const response = await fetch('/api/menu-items', {
         method: 'PUT',
         body: JSON.stringify(data),

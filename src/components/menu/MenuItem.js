@@ -1,5 +1,6 @@
 import {CartContext} from "@/components/AppContext";
 import MenuItemTile from "@/components/menu/MenuItemTile";
+import { formatFromMoney } from "@/libs/formatInput";
 import Image from "next/image";
 import {useContext, useState} from "react";
 
@@ -82,7 +83,7 @@ export default function MenuItem(menuItem) {
                         onChange={() => setSelectedSize(size)}
                         checked={selectedSize?.name === size.name}
                         name="size"/>
-                      {size.name} R${basePrice + size.price}
+                      {size.name} {formatFromMoney(basePrice + size.price)}
                     </label>
                   ))}
                 </div>
@@ -99,7 +100,7 @@ export default function MenuItem(menuItem) {
                         onChange={ev => handleExtraThingClick(ev, extraThing)}
                         checked={selectedExtras.map(e => e.id).includes(extraThing.id)}
                         name={extraThing.name} />
-                      {extraThing.name} +R${extraThing.price}
+                      {extraThing.name} +{formatFromMoney(extraThing.price)}
                     </label>
                   ))}
                 </div>
@@ -116,7 +117,7 @@ export default function MenuItem(menuItem) {
               <button
                 className="mt-2 primary sticky bottom-2"
                 onClick={handleAddToCartButtonClick}>
-                Adicionar ao carrinho R${selectedPrice}
+                Adicionar ao carrinho {formatFromMoney(selectedPrice)}
               </button>
               <button
                 className="mt-2"

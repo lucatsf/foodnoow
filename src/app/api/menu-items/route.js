@@ -33,8 +33,7 @@ export async function POST(req) {
   if (await isAdmin()) {
     const company_id = await companyOfUser();
     const menuItemService = new MenuItemService();
-    const basePrice = parseFloat(data.basePrice);
-    data.basePrice = basePrice;
+    data.basePrice = parseFloat(data.basePrice);
     const result = await menuItemService.create({...data, company_id});
     return Response.json(result);
   } else {
@@ -74,8 +73,7 @@ export async function PUT(req) {
       }
     }
     const menuItemService = new MenuItemService();
-    const basePrice = parseFloat(data.basePrice);
-    data.basePrice = basePrice;
+    data.basePrice =  parseFloat(data?.basePrice);
     const result = await menuItemService.update({...data, company_id, id});
     return Response.json(result);
   }

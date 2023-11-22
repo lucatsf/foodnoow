@@ -1,11 +1,10 @@
 'use client';
 import {CartContext, cartProductPrice} from "@/components/AppContext";
-import Trash from "@/components/icons/Trash";
 import AddressInputs from "@/components/layout/AddressInputs";
 import SectionHeaders from "@/components/layout/SectionHeaders";
 import CartProduct from "@/components/menu/CartProduct";
 import {useProfile} from "@/components/UseProfile";
-import Image from "next/image";
+import { formatFromMoney } from "@/libs/formatInput";
 import {useContext, useEffect, useState} from "react";
 import toast from "react-hot-toast";
 
@@ -110,9 +109,9 @@ export default function CartPage() {
               Total:
             </div>
             <div className="font-semibold pl-2 text-right">
-              R${subtotal}<br />
-              R$5<br />
-              R${subtotal + 5}
+              {formatFromMoney(subtotal)}<br />
+              {formatFromMoney(5)}<br />
+              {formatFromMoney(subtotal + 5)}
             </div>
           </div>
         </div>
@@ -126,7 +125,7 @@ export default function CartPage() {
             />
             <button
               className="w-full mt-4 bg-red-500 text-white py-2 rounded hover:bg-red-600 disabled:opacity-50"
-              disabled={disabled} type="submit">Fechar pedido R${subtotal+5}</button>
+              disabled={disabled} type="submit">Fechar pedido {formatFromMoney(subtotal+5)}</button>
           </form>
         </div>
       </div>

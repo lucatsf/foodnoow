@@ -2,6 +2,7 @@ import Plus from "@/components/icons/Plus";
 import Trash from "@/components/icons/Trash";
 import EditableImage from "@/components/layout/EditableImage";
 import MenuItemPriceProps from "@/components/layout/MenuItemPriceProps";
+import { formatFromMoney } from "@/libs/formatInput";
 import {useEffect, useState} from "react";
 
 export default function MenuItemForm({onSubmit,menuItem}) {
@@ -64,7 +65,7 @@ export default function MenuItemForm({onSubmit,menuItem}) {
           <label>Preço base</label>
           <input
             type="text"
-            value={basePrice}
+            value={formatFromMoney(basePrice)}
             onChange={ev => setBasePrice(ev.target.value)}
           />
           <MenuItemPriceProps name={'Tamanhos'}

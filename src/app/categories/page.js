@@ -31,6 +31,10 @@ export default function CategoriesPage() {
       if (editedCategory) {
         data.id = editedCategory.id;
       }
+      if (!data.name) {
+        reject("Categoria precisa de um nome");
+        return;
+      }
       const response = await fetch('/api/categories', {
         method: editedCategory ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -42,14 +46,14 @@ export default function CategoriesPage() {
       if (response.ok)
         resolve();
       else
-        reject();
+        reject('Erro ao processar a requisição');
     });
     await toast.promise(creationPromise, {
       loading: editedCategory
                  ? 'Updating category...'
                  : 'Creating your new category...',
       success: editedCategory ? 'Category updated' : 'Category created',
-      error: 'Error, sorry...',
+      error: (err) => err.toString(),
     });
   }
 
@@ -66,8 +70,8 @@ export default function CategoriesPage() {
     });
 
     await toast.promise(promise, {
-      loading: 'Deleting...',
-      success: 'Deleted',
+      loading: 'Deletando...',
+      success: 'Deletado',
       error: 'Error',
     });
 

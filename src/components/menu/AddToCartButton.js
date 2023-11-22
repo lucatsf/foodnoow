@@ -1,7 +1,9 @@
+import { formatFromMoney } from "@/libs/formatInput";
+
 export default function AddToCartButton({
   onClick, basePrice
 }) {
-  const textButton = basePrice ? `Adicionar R$${basePrice}` : 'Adicionar';
+  const textButton = basePrice ? `Adicionar ${formatFromMoney(basePrice)}` : 'Adicionar';
   return (
     <button
       type="button"

@@ -4,7 +4,7 @@ import CategoryService from "@/services/CategoryService";
 export async function POST(req) {
   const {name} = await req.json();
   if (!name) {
-    throw new Error('Name is required');
+    throw new Error('Nome é obrigatório');
   }
   if (await isAdmin()) {
     const company_id = await companyOfUser();
@@ -17,7 +17,7 @@ export async function POST(req) {
 export async function PUT(req) {
   const {id, name} = await req.json();
   if (!id || !name) {
-    throw new Error('Id and Name are required');
+    throw new Error('Nome e id são obrigatórios');
   }
   if (await isAdmin()) {
     const company_id = await companyOfUser();

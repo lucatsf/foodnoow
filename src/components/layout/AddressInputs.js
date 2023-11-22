@@ -3,7 +3,7 @@ import { useProfile } from "../UseProfile";
 
 export default function AddressInputs({addressProps,setAddressProp,disabled=false, setChangeValues}) {
   const {data:profileData} = useProfile();
-  const {phone, streetAddress, number, neighborhood, complement} = addressProps;
+  const {phone, streetAddress, city, number, neighborhood, complement} = addressProps;
   function changeValues () {
     if (typeof setChangeValues === 'undefined' || setChangeValues === null) {
       return
@@ -13,7 +13,8 @@ export default function AddressInputs({addressProps,setAddressProp,disabled=fals
       streetAddress &&
       number &&
       neighborhood &&
-      complement
+      complement &&
+      city
     ) {
       setChangeValues(false);
     } else {
@@ -31,11 +32,12 @@ export default function AddressInputs({addressProps,setAddressProp,disabled=fals
       addressProps.streetAddress &&
       addressProps.number &&
       addressProps.neighborhood &&
-      addressProps.complement
+      addressProps.complement &&
+      addressProps.city
     ) {
       setChangeValues(false);
     }
-  }, [phone, streetAddress, number, neighborhood, complement])
+  }, [phone, streetAddress, city, number, neighborhood, complement])
 
   return (
     <>
@@ -45,6 +47,16 @@ export default function AddressInputs({addressProps,setAddressProp,disabled=fals
         type="tel" placeholder="Telefone"
         value={phone || ''} onChange={ev => {
           setAddressProp('phone', ev.target.value);
+          changeValues();
+        }}
+        onBlur={changeValues}
+      />
+      <label>Cidade</label>
+      <input
+        disabled={disabled}
+        type="text" placeholder="Cidade"
+        value={city || ''} onChange={ev => {
+          setAddressProp('city', ev.target.value);
           changeValues();
         }}
         onBlur={changeValues}

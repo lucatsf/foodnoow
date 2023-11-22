@@ -29,8 +29,28 @@ export default function ProfilePage() {
 
   async function handleProfileInfoUpdate(ev, data) {
     ev.preventDefault();
-
     const savingPromise = new Promise(async (resolve, reject) => {
+      if (!data?.name || data?.name === '') {
+        reject('O nome é obrigatório');
+      }
+      if (!data?.streetAddress || data?.streetAddress === '') {
+        reject('O endereço é obrigatório');
+      }
+      if (!data?.number || data?.number === '') {
+        reject('O número é obrigatório');
+      }
+      if (!data?.neighborhood || data?.neighborhood === '') {
+        reject('O bairro é obrigatório');
+      }
+      if (!data?.city || data?.city === '') {
+        reject('A cidade é obrigatória');
+      }
+      if (!data?.phone || data?.phone === '') {
+        reject('O telefone é obrigatório');
+      }
+      if(!data?.complement || data?.complement === '') {
+        reject('O complemento é obrigatório');
+      }
       const response = await fetch('/api/profile', {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
@@ -39,13 +59,13 @@ export default function ProfilePage() {
       if (response.ok)
         resolve()
       else
-        reject();
+        reject('Erro ao salvar');
     });
 
     await toast.promise(savingPromise, {
       loading: 'Salvando...',
       success: 'Perfil salvo!',
-      error: 'Error',
+      error: (err) => err.toString(),
     });
 
   }

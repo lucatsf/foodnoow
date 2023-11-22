@@ -8,6 +8,28 @@ export async function PUT(req) {
   const data = await req.json();
   const {id, name, image, ...otherUserInfo} = data;
 
+  if (!name || name === '') {
+    throw new Error('O nome é obrigatório');
+  }
+  if (!data?.streetAddress || data?.streetAddress === '') {
+    throw new Error('O endereço é obrigatório');
+  }
+  if (!data?.number || data?.number === '') {
+    throw new Error('O número é obrigatório');
+  }
+  if (!data?.neighborhood || data?.neighborhood === '') {
+    throw new Error('O bairro é obrigatório');
+  }
+  if (!data?.city || data?.city === '') {
+    throw new Error('A cidade é obrigatória');
+  }
+  if (!data?.phone || data?.phone === '') {
+    throw new Error('O telefone é obrigatório');
+  }
+  if(!data?.complement || data?.complement === '') {
+    throw new Error('O complemento é obrigatório');
+  }
+
   let filter = {};
   if (id) {
     filter = {id};

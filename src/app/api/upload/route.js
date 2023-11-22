@@ -1,5 +1,6 @@
 import {PutObjectCommand, S3Client} from "@aws-sdk/client-s3";
-import uniqid from 'uniqid';
+import { v4 as uuid } from 'uuid';
+import sharp from 'sharp';
 
 export async function POST(req) {
   const data =  await req.formData();
@@ -15,7 +16,7 @@ export async function POST(req) {
     });
 
     const ext = file.name.split('.').slice(-1)[0];
-    const newFileName = uniqid() + '.' + ext;
+    const newFileName = uuid() + '.' + ext;
 
     const chunks = [];
     for await (const chunk of file.stream()) {
@@ -25,12 +26,16 @@ export async function POST(req) {
 
     const bucket = process.env.BUCKET_;
 
+    const rezied = await sharp(buffer)
+    .resize(500, 500)
+    .toBuffer();
+
     await s3Client.send(new PutObjectCommand({
       Bucket: bucket,
       Key: newFileName,
       ACL: 'public-read',
       ContentType: file.type,
-      Body: buffer,
+      Body: rezied,
     }));
 
 

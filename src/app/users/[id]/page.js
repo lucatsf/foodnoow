@@ -12,6 +12,7 @@ export default function EditUserPage() {
   const {id} = useParams();
 
   useEffect(() => {
+    if (!id) return;
     fetch('/api/profile?id='+id).then(res => {
       res.json().then(user => {
         setUser(user);
@@ -52,7 +53,7 @@ export default function EditUserPage() {
     <section className="mt-8 mx-auto max-w-2xl">
       <UserTabs isAdmin={true} />
       <div className="mt-8">
-        <UserForm user={user} onSave={handleSaveButtonClick} />
+        {user && <UserForm user={user} onSave={handleSaveButtonClick} />}
       </div>
     </section>
   );

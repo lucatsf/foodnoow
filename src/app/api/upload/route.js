@@ -3,6 +3,7 @@ import { v4 as uuid } from 'uuid';
 import sharp from 'sharp';
 import { isAdmin } from "../auth/[...nextauth]/route";
 import { checkLimiter } from "../config/limiter";
+import { response } from "@/libs/response";
 
 export async function POST(req) {
   await checkLimiter(req);
@@ -27,7 +28,7 @@ export async function POST(req) {
       }
       const buffer = Buffer.concat(chunks);
 
-      const bucket = process.env.process.env.NEXT_BUCKET;
+      const bucket = process.env.NEXT_BUCKET;
 
       const rezied = await sharp(buffer)
       .resize(500, 500)

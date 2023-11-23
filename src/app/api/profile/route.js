@@ -8,6 +8,7 @@ import { response } from "@/libs/response";
 
 export async function PUT(req) {
   await checkLimiter(req);
+
   const data = await req.json();
   const {id, name, image, ...otherUserInfo} = data;
 

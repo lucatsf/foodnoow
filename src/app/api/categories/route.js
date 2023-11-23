@@ -12,7 +12,7 @@ export async function POST(req) {
   if (await isAdmin()) {
     const company_id = await companyOfUser();
     const categoryService = new CategoryService();
-    const result = await db.create({name, company_id});
+    const result = await categoryService.create({name, company_id});
     return response(result, {req})
   }
 }
@@ -25,8 +25,8 @@ export async function PUT(req) {
   }
   if (await isAdmin()) {
     const company_id = await companyOfUser();
-    const db = new CategoryService();
-    const result = await db.update({id, name, company_id});
+    const categoryService = new CategoryService();
+    const result = await categoryService.update({id, name, company_id});
     return response(result, {req})
   }
   return response(true, {req})

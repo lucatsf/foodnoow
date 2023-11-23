@@ -10,6 +10,6 @@ export async function GET(req) {
     const userService = new UserService();
     return response(await userService.getAll({company_id: companyId}), {req});
   } else {
-    return response([], {req});
+    return response(null, {req});
   }
 }

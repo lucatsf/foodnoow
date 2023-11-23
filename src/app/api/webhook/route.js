@@ -1,8 +1,11 @@
 // import {Order} from "@/models/Order";
 
+import { checkLimiter } from "../config/limiter";
+
 // const stripe = require('stripe')(process.env.STRIPE_SK);
 
 export async function POST(req) {
+  await checkLimiter(req);
   // const sig = req.headers.get('stripe-signature');
   // let event;
 

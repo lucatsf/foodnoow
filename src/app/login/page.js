@@ -1,19 +1,47 @@
 'use client';
 import {signIn} from "next-auth/react";
 import Image from "next/image";
-import { useNavigation } from "next/navigation";
-import {useEffect, useState} from "react";
+import toast from "react-hot-toast";
+import {useState} from "react";
+import {useRouter} from "next/navigation";
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginInProgress, setLoginInProgress] = useState(false);
 
+  const router = useRouter();
+
   async function handleFormSubmit(ev) {
     ev.preventDefault();
     setLoginInProgress(true);
-    await signIn('credentials', {email, password, callbackUrl: '/'});
-
+    const savingPromise = new Promise(async (resolve, reject) => {
+      if (!email || email === '') {
+        reject('O email é obrigatório');
+      }
+      if (!password || password === '') {
+        reject('A senha é obrigatória');
+      }
+      const response = await signIn('credentials', {
+        email,
+        password,
+        callbackUrl: '/',
+        redirect: false,
+      });
+      if (response?.ok) {
+        setLoginInProgress(false);
+        router.push('/');
+        resolve()
+      } else {
+        setLoginInProgress(false);
+        reject('Email ou senha incorretos');
+      }
+    })
+    await toast.promise(savingPromise, {
+      loading: 'Carregando credenciais...',
+      success: 'Credenciais carregadas com sucesso!',
+      error: (err) => err.toString(),
+    });
     setLoginInProgress(false);
   }
 

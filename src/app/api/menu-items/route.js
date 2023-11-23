@@ -1,7 +1,10 @@
 import {companyOfUser, isAdmin} from "@/app/api/auth/[...nextauth]/route";
 import MenuItemService from "@/services/MenuItemService";
+import { checkLimiter } from "../config/limiter";
+import { response } from "@/libs/response";
 
 export async function POST(req) {
+  await checkLimiter(req);
   const data = await req.json();
   if (
     (!data?.name || data?.name == '')||
@@ -35,13 +38,14 @@ export async function POST(req) {
     const menuItemService = new MenuItemService();
     data.basePrice = parseFloat(data.basePrice);
     const result = await menuItemService.create({...data, company_id});
-    return Response.json(result);
+    return response(result, {req})
   } else {
-    return Response.json({});
+    return response(true, {req})
   }
 }
 
 export async function PUT(req) {
+  await checkLimiter(req);
   if (await isAdmin()) {
     const {id, ...data} = await req.json();
     const company_id = await companyOfUser();
@@ -75,30 +79,32 @@ export async function PUT(req) {
     const menuItemService = new MenuItemService();
     data.basePrice =  parseFloat(data?.basePrice);
     const result = await menuItemService.update({...data, company_id, id});
-    return Response.json(result);
+    return response(result, {req})
   }
-  return Response.json(true);
+  return response(true, {req})
 }
 
-export async function GET() {
+export async function GET(req) {
+  await checkLimiter(req);
   const companyId = await companyOfUser();
   const menuItemService = new MenuItemService();
 
   if (await isAdmin()) {
     const result = await menuItemService.getAll({ company_id: companyId});
-    return Response.json(result);
+    return response(result, {req})
   }
   const result = await menuItemService.getAll();
-  return Response.json(result);
+  return response(result, {req})
 }
 
 export async function DELETE(req) {
+  await checkLimiter(req);
   const url = new URL(req.url);
   const id = url.searchParams.get('id');
   if (await isAdmin()) {
     const menuItemService = new MenuItemService();
     await menuItemService.delete(id);
-    return Response.json(true);
+    return response(true, {req})
   }
-  return Response.json(true);
+  return response(true, {req})
 }

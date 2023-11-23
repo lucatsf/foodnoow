@@ -8,6 +8,9 @@ import Link from "next/link";
 import {useContext, useState} from "react";
 
 function AuthLinks({status, userName}) {
+  const handleSignOut = async () => {
+    await signOut({callbackUrl: '/', redirect: true});
+  }
   if (status === 'authenticated') {
     return (
       <>
@@ -15,7 +18,7 @@ function AuthLinks({status, userName}) {
           Olá, {userName}
         </Link>
         <button
-          onClick={() => signOut({ callbackUrl: '/' })}
+          onClick={handleSignOut}
           className="bg-primary rounded-full text-white px-8 py-2">
           Sair
         </button>

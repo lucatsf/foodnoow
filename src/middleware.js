@@ -21,8 +21,8 @@ export async function middleware(req) {
   
   const onlyAuthenticated = [
     '/api/categories',
-    '/api/menu-items/:path*',
-    '/api/users/:path*',
+    '/api/menu-items',
+    '/api/users',
   ];
 
   if (!onlyAuthenticated.includes(url.pathname)) {

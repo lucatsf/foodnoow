@@ -2,8 +2,10 @@ import {PutObjectCommand, S3Client} from "@aws-sdk/client-s3";
 import { v4 as uuid } from 'uuid';
 import sharp from 'sharp';
 import { isAdmin } from "../auth/[...nextauth]/route";
+import { checkLimiter } from "../config/limiter";
 
 export async function POST(req) {
+  await checkLimiter(req);
   const data =  await req.formData();
   if (data.get('file')) {
     const file = data.get('file');
@@ -11,8 +13,8 @@ export async function POST(req) {
       const s3Client = new S3Client({
         region: 'us-east-2',
         credentials: {
-          accessKeyId: process.env.AWS_ACCESS_KEY_,
-          secretAccessKey: process.env.AWS_SECRET_KEY_,
+          accessKeyId: process.env.NEXT_AUTH_AWS_ACCESS_KEY,
+          secretAccessKey: process.env.NEXT_AUTH_AWS_SECRET_KEY,
         },
       });
 
@@ -25,7 +27,7 @@ export async function POST(req) {
       }
       const buffer = Buffer.concat(chunks);
 
-      const bucket = process.env.BUCKET_;
+      const bucket = process.env.process.env.NEXT_BUCKET;
 
       const rezied = await sharp(buffer)
       .resize(500, 500)
@@ -41,9 +43,9 @@ export async function POST(req) {
 
 
       const link = 'https://'+bucket+'.s3.amazonaws.com/'+newFileName;
-      return Response.json(link);
+      return response(link, {req});
     }
     throw new Error('Você não tem permissão para realizar esta ação');
   }
-  return Response.json(true);
+  return response(true, {req});
 }

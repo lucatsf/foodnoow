@@ -1,8 +1,11 @@
 import {User} from "@/models/User";
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
+import { checkLimiter } from "../config/limiter";
+import { response } from "@/libs/response";
 
 export async function POST(req) {
+  await checkLimiter(req);
   const body = await req.json();
   mongoose.connect(process.env.MONGO_URL_);
   const pass = body.password;
@@ -18,5 +21,5 @@ export async function POST(req) {
   body.password = bcrypt.hashSync(notHashedPassword, salt);
 
   const createdUser = await User.create(body);
-  return Response.json(createdUser);
+  return response(createdUser, {req});
 }

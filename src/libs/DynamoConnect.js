@@ -2,7 +2,7 @@
 import dynamoose from "dynamoose";
 
 // Verificar as variáveis de ambiente para AWS
-if (!process.env.AWS_ACCESS_KEY_ || !process.env.AWS_SECRET_KEY_) {
+if (!process.env.NEXT_AUTH_AWS_ACCESS_KEY || !process.env.NEXT_AUTH_AWS_SECRET_KEY) {
   throw new Error('Invalid/Missing AWS environment variables');
 }
 
@@ -10,8 +10,8 @@ if (!process.env.AWS_ACCESS_KEY_ || !process.env.AWS_SECRET_KEY_) {
 const ddbConfig = {
   region: 'us-east-2', // ou outra região conforme necessário
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_,
-    secretAccessKey: process.env.AWS_SECRET_KEY_,
+    accessKeyId: process.env.NEXT_AUTH_AWS_ACCESS_KEY,
+    secretAccessKey: process.env.NEXT_AUTH_AWS_SECRET_KEY,
   },
 };
 

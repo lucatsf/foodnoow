@@ -1,10 +1,13 @@
-import {authOptions} from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/libs/auth";
 import { getValuesObject } from "@/libs/getValuesObject";
 import UserInfoService from "@/services/UserInfoService";
 import UserService from "@/services/UserService";
 import {getServerSession} from "next-auth";
+import { checkLimiter } from "../config/limiter";
+import { response } from "@/libs/response";
 
 export async function PUT(req) {
+  await checkLimiter(req);
   const data = await req.json();
   const {id, name, image, ...otherUserInfo} = data;
 
@@ -47,10 +50,11 @@ export async function PUT(req) {
     ...userInfo, email:user.email,
   });
 
-  return Response.json(true);
+  return response(true, {req})
 }
 
 export async function GET(req) {
+  await checkLimiter(req);
   const url = new URL(req.url);
   const id = url.searchParams.get('id');
 
@@ -61,7 +65,7 @@ export async function GET(req) {
     const session = await getServerSession(authOptions);
     const email = session?.user?.email;
     if (!email) {
-      return Response.json({});
+      return response(false, {req})
     }
     filterUser = {email};
   }
@@ -71,6 +75,6 @@ export async function GET(req) {
   const user = await userService.find(filterUser);
   const userInfo = await userInfoService.find({email:user.email});
 
-  return Response.json({...user, ...userInfo});
+  return response({...user, ...userInfo}, {req});
 
 }

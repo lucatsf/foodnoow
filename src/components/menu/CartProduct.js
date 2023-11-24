@@ -1,5 +1,6 @@
 import {cartProductPrice} from "@/components/AppContext";
 import Trash from "@/components/icons/Trash";
+import { formatFromMoney } from "@/libs/formatInput";
 import Image from "next/image";
 
 export default function CartProduct({indexProduct,product,onRemove}) {
@@ -20,13 +21,13 @@ export default function CartProduct({indexProduct,product,onRemove}) {
         {product.extras?.length > 0 && (
           <div className="text-sm text-gray-500">
             {product.extras.map(extra => (
-              <div key={extra.name}>{extra.name} R${extra.price}</div>
+              <div key={extra.name}>{extra.name} {formatFromMoney(extra?.price)}</div>
             ))}
           </div>
         )}
       </div>
       <div className="text-lg font-semibold">
-        R${cartProductPrice(product)}
+        {formatFromMoney(cartProductPrice(product))}
       </div>
       {!!onRemove && (
         <div className="ml-2">

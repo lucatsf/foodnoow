@@ -40,8 +40,7 @@ export async function GET(req) {
     const result = await categoryService.getAll({ company_id: companyId});
     return response(result, {req})
   }
-  const result = await categoryService.getAll();
-  return response(result, {req})
+  return response(true, {req})
 }
 
 export async function DELETE(req) {

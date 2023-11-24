@@ -36,7 +36,20 @@ export default class MenuItemService {
     return await MenuItem.scan(search).exec();
   }
 
-  async find({company_id}) {
+  async find({company_id, id}) {
+    company_id = company_id.toString()
+    let search = {};
+    if (id) {
+      search.id = { eq: id };
+    }
+    if (company_id) {
+      search.company_id = { eq: company_id };
+    }
+    const menuItem = await MenuItem.scan(search).exec();
+    return menuItem[0];
+  }
+
+  async findToCompany({company_id}) {
     company_id = company_id.toString();
     return await MenuItem.scan('company_id').eq(company_id).exec();
   }

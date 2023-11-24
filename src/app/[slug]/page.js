@@ -16,8 +16,14 @@ const PageOfCompany = () => {
     fetch('/api/menu-company?slug=' + slug).then(res => {
       res.json().then(({categories, menuItems, company}) => {
         setCategories(categories);
-        setMenuItems(menuItems);
         setCompany(company);
+        menuItems = menuItems.map(item => {
+          return {
+            ...item,
+            delivery: company?.delivery || 0
+          }
+        });
+        setMenuItems(menuItems);
       })
     });
   }, []);

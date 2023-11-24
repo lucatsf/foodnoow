@@ -17,7 +17,6 @@ export async function middleware(req) {
   const origin = req.headers.get('origin');
 
   if (origin && !allowedOrigins.includes(origin)) {
-    console.log('-------------')
     return NextResponse.redirect(null, {
       status: 403,
       statusText: 'Forbidden',

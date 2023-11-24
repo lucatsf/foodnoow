@@ -2,12 +2,33 @@
 import Right from "@/components/icons/Right";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from 'react';
 
 export default function Hero() {
   const router = useRouter();
+  const [currentImage, setCurrentImage] = useState('/pizza.png');
+  const images = [
+    '/pizza.png',
+    '/sushi.png',
+    '/burguer.png',
+    '/milkshake.png',
+  ];
+
   function goToPage() {
     router.push('/menu');
   }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage(current => {
+        const index = images.indexOf(current);
+        return images[(index + 1) % images.length];
+      });
+    }, 3000);
+  
+    return () => clearInterval(interval);
+  }, []);
+  
   return (
     <section className="hero md:mt-4">
       <div className="py-8 md:py-12">
@@ -38,7 +59,12 @@ export default function Hero() {
         </div>
       </div>
         <div className="relative hidden md:block">
-          <Image src={'/pizza.png'} fill style={{objectFit: 'contain'}} alt={'pizza'} />
+          <Image 
+            src={currentImage} 
+            fill 
+            alt="Imagem dinâmica" 
+            style={{ objectFit: 'contain', transition: 'opacity 0.5s ease-in-out' }}
+          />
         </div>
     </section>
   );

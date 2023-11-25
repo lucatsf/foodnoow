@@ -1,5 +1,6 @@
 'use client';
 import {CartContext, cartProductPrice} from "@/components/AppContext";
+import MethodPayment from "@/components/cart/MethodPayment";
 import AddressInputs from "@/components/layout/AddressInputs";
 import SectionHeaders from "@/components/layout/SectionHeaders";
 import CartProduct from "@/components/menu/CartProduct";
@@ -14,6 +15,13 @@ export default function CartPage() {
   const [address, setAddress] = useState({});
   const [disabled, setDisabled] = useState(true);
   const [deliveryPrice, setDeliveryPrice] = useState(0);
+  const [deliveryDefault, setDeliveryDefault] = useState(0);
+  const [deliveryDetails, setDeliveryDetails] = useState({
+    delivery: 'delivery',
+    paymentMethod: 'card',
+    changeFor: '',
+  });
+
   const {data:profileData} = useProfile();
   const router = useRouter();
 
@@ -46,6 +54,7 @@ export default function CartPage() {
   useEffect(() => {
     if (cartProducts?.length > 0) {
       setDeliveryPrice(cartProducts[0]?.delivery)
+      setDeliveryDefault(cartProducts[0]?.delivery)
     }
   }, [cartProducts])
 
@@ -107,6 +116,7 @@ export default function CartPage() {
         body: JSON.stringify({
           address,
           cartProducts,
+          deliveryDetails
         }),
       }).then(async (response) => {
         if (response?.ok) {
@@ -136,7 +146,7 @@ export default function CartPage() {
   }
 
   return (
-    <section className="mt-8">
+    <section className="max-w-2xl mx-auto mt-8">
       <div className="text-center">
         <SectionHeaders mainHeader="Carrinho" />
       </div>
@@ -173,6 +183,11 @@ export default function CartPage() {
               addressProps={address}
               setAddressProp={handleAddressChange}
               setChangeValues={setDisabled}
+            />
+            <MethodPayment
+              deliveryDefault={deliveryDefault}
+              deliveryPrice={setDeliveryPrice}
+              deliveryDetails={setDeliveryDetails}
             />
             <button
               className="w-full mt-4 bg-red-500 text-white py-2 rounded hover:bg-red-600 disabled:opacity-50"

@@ -12,7 +12,7 @@ export default class CheckoutService {
     this.uuid = uuidv4();
   }
 
-  async create({ address, cartProducts: menuItems}) {
+  async create({ address, cartProducts: menuItems, deliveryDetails}) {
     let subtotal = 0;
     let companyId = null
 
@@ -45,7 +45,7 @@ export default class CheckoutService {
       if (!menuItem) {
         throw new Error('O produto não tem um item de menu associado');
       }
-      subtotal += this.cartProductPrice(menuItem);
+      subtotal += this.cartProductPrice(cartProduct);
     }
 
     const company = await Company.get(companyId);
@@ -64,8 +64,9 @@ export default class CheckoutService {
       subtotal,
       delivery,
       total: subtotal + delivery,
-      status: 'pending',
+      status: 'Preparando',
       menuItems,
+      deliveryDetails: deliveryDetails
     }
     return await Checkout.create(checkout);
   }

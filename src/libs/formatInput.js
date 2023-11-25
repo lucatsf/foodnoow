@@ -20,6 +20,7 @@ export const formatFromMoney = (value) => {
     }).format(result / 100);
     return newValue;
   }
+  return '';
 }
 
 export const getValueMoney = (value) => {

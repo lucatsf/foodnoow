@@ -34,6 +34,10 @@ const schema = new dynamoose.Schema({
     type: Array,
     required: true
   },
+  deliveryDetails: {
+    type: Object,
+    required: true
+  },
 }, {
     saveUnknown: true,
     timestamps: true

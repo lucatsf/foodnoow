@@ -87,6 +87,7 @@ export default function Header() {
 
           
           <Link href={'/'}>Inicio</Link>
+          {userName && (<Link href={'/orders'}>Pedidos</Link>)}
           <Link href={'/menu'}>Restaurantes</Link>
           <Link href={'/#about'}>Sobre</Link>
           <Link href={'/#contact'}>Contato</Link>

@@ -10,10 +10,10 @@ export default class UserService {
   async create(data) {
     return await User.create({
       id: this.uuid,
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      image: data.image,
+      name: data?.name,
+      email: data?.email,
+      password: data?.password,
+      image: data?.image,
     });
   }
 

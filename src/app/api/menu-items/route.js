@@ -9,7 +9,6 @@ export async function POST(req) {
   if (
     (!data?.name || data?.name == '')||
     (!data.description || data.description == '') ||
-    (!data.basePrice || data.basePrice == '') ||
     (!data.category_id || data.category_id == '')
   ) {
     throw new Error('Por favor, preencha todos os campos');
@@ -32,6 +31,9 @@ export async function POST(req) {
         throw new Error('Por favor, preencha todos os campos de acompanhamento');
       }
     }
+  }
+  if (!data.basePrice || data.basePrice == '') {
+    data.basePrice = 0;
   }
   if (await isAdmin()) {
     const company_id = await companyOfUser();

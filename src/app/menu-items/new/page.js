@@ -20,7 +20,6 @@ export default function NewMenuItemPage() {
       if (
         (!data?.name || data?.name == '')||
         (!data.description || data.description == '') ||
-        (!data.basePrice || data.basePrice == '') ||
         (!data.category_id || data.category_id == '')
       ) {
         reject('Por favor, preencha todos os campos');

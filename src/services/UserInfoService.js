@@ -29,8 +29,21 @@ export default class UserInfoService {
     UserInfo.delete(id);
   }
 
-  async getAll() {
-    return await UserInfo.scan().exec();
+  async getAll({email, id, company_id}) {
+    let search = {};
+    if (email) {
+      search.email = { eq: email };
+    }
+    if (id) {
+      search.id = { eq: id };
+    }
+    if (company_id) {
+      search.company_id = { eq: company_id };
+    }
+    const users = await UserInfo.scan(search).exec();
+    return users.sort((a, b) => {
+      return new Date(a.createdAt) - new Date(b.createdAt);
+    });
   }
 
   async find({email, id}) {

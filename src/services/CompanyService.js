@@ -25,6 +25,8 @@ export default class CompanyService {
   }
 
   async update(data) {
+    delete data?.createdAt;
+    delete data?.updatedAt;
     return await Company.update(data);
   }
 
@@ -33,7 +35,14 @@ export default class CompanyService {
   }
 
   async getAll() {
-    return await Company.scan().exec();
+    const companies = await Company.scan().exec();
+    return companies.sort((a, b) => {
+      if (a.numberOfOrders && b.numberOfOrders) {
+        if (a.numberOfOrders > b.numberOfOrders) {
+          return -1;
+        }
+      }
+    });
   }
 
   async find({id}) {

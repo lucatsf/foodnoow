@@ -57,7 +57,10 @@ export default class MenuItemService {
     if (name) {
       search.name = name;
     }
-    return await MenuItem.scan(search).exec();
+    const menuItems = await MenuItem.scan(search).exec();
+    return menuItems.sort((a, b) => {
+      return new Date(a.createdAt) - new Date(b.createdAt);
+    });
   }
 
   async find({company_id, id}) {
@@ -75,6 +78,9 @@ export default class MenuItemService {
 
   async findToCompany({company_id}) {
     company_id = company_id.toString();
-    return await MenuItem.scan('company_id').eq(company_id).exec();
+    const menuItems = await MenuItem.scan('company_id').eq(company_id).exec();
+    return menuItems.sort((a, b) => {
+      return new Date(a.createdAt) - new Date(b.createdAt);
+    });
   }
 }

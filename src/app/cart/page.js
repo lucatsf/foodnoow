@@ -67,7 +67,11 @@ export default function CartPage() {
   }
   async function proceedToCheckout(ev) {
     ev.preventDefault();
-
+    if (!profileData?.id) {
+      router.push('/login');
+      alert('Faça login para continuar');
+      return;
+    }
     const promise = new Promise((resolve, reject) => {
       if (!address.phone || !address.streetAddress || !address.neighborhood || !address.number || !address.complement || !address.city) {
         reject('Preencha todos os campos do endereço');
@@ -77,38 +81,38 @@ export default function CartPage() {
         reject('Adicione produtos ao seu carrinho');
         return;
       }
-      const cartProductsValid = cartProducts.filter(product => {
-        if (product?.basePrice <= 0) {
-          return false
-        }
+      // const cartProductsValid = cartProducts.filter(product => {
+      //   if (product?.basePrice <= 0) {
+      //     return false
+      //   }
 
-        if (product?.extraIngredientPrices.length > 0) {
-          const extraIngredientPriceValid = product?.extraIngredientPrices.filter(
-            extraIngredient => {
-              if (extraIngredient?.price <= 0 || !extraIngredient?.name) {
-                return false
-              }
-              return true
-            }
-          )
-          if (extraIngredientPriceValid.length <= 0) {
-            return false
-          }
-        }
+      //   if (product?.extraIngredientPrices.length > 0) {
+      //     const extraIngredientPriceValid = product?.extraIngredientPrices.filter(
+      //       extraIngredient => {
+      //         if (extraIngredient?.price <= 0 || !extraIngredient?.name) {
+      //           return false
+      //         }
+      //         return true
+      //       }
+      //     )
+      //     if (extraIngredientPriceValid.length <= 0) {
+      //       return false
+      //     }
+      //   }
 
-        if (product?.sizes.length > 0) {
-          const sizesValid = product?.sizes.filter(size => {
-            if (size?.price <= 0 || !size?.name) {
-              return false
-            }
-            return true
-          })
+      //   if (product?.sizes.length > 0) {
+      //     const sizesValid = product?.sizes.filter(size => {
+      //       if (size?.price <= 0 || !size?.name) {
+      //         return false
+      //       }
+      //       return true
+      //     })
 
-          if (sizesValid.length <= 0) {
-            return false
-          }
-        }
-      })
+      //     if (sizesValid.length <= 0) {
+      //       return false
+      //     }
+      //   }
+      // })
 
       fetch('/api/checkout', {
         method: 'POST',

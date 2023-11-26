@@ -61,7 +61,7 @@ export function AppProvider({children, session}) {
 
   function addToCart(product, size=null, extras=[], flavorsPrices=[]) {
     if (cartProducts.length > 0) {
-      if (cartProducts[0].company.id !== product.company.id) {
+      if (cartProducts[0]?.company_id !== product?.company_id) {
         toast.error('Você só pode adicionar produtos de uma empresa por vez, limpando o carrinho atual para adicionar este produto');
         return;
       }

@@ -41,7 +41,7 @@ export default function MenuItemForm({onSubmit,menuItem}) {
         className="md:grid items-start gap-4"
         style={{gridTemplateColumns:'.3fr .7fr'}}>
         <div>
-          <EditableImage link={image} setLink={setImage} />
+          <EditableImage link={image} setLink={setImage} local={'menu-items'} />
         </div>
         <div className="grow">
           <label>Nome do produto</label>

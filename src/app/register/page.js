@@ -2,6 +2,7 @@
 import {signIn} from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {useState} from "react";
 
 export default function RegisterPage() {
@@ -11,6 +12,8 @@ export default function RegisterPage() {
   const [creatingUser, setCreatingUser] = useState(false);
   const [userCreated, setUserCreated] = useState(false);
   const [error, setError] = useState(false);
+  const router = useRouter();
+
   async function handleFormSubmit(ev) {
     ev.preventDefault();
     setCreatingUser(true);
@@ -23,6 +26,7 @@ export default function RegisterPage() {
     });
     if (response.ok) {
       setUserCreated(true);
+      router.replace('/login');
     }
     else {
       setError(true);

@@ -7,22 +7,66 @@ import {useContext, useState} from "react";
 export default function MenuItem(menuItem) {
   const {
     image,name,description,basePrice,
-    sizes, extraIngredientPrices,
+    sizes, extraIngredientPrices, flavorsPrices
   } = menuItem;
   const [
     selectedSize, setSelectedSize
   ] = useState(sizes?.[0] || null);
+  const [selectedFlavors, setSelectedFlavors] = useState([flavorsPrices?.[0] || null]);
   const [selectedExtras, setSelectedExtras] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const {addToCart} = useContext(CartContext);
+  const maxSelections = {
+    pequena: 2,
+    media: 2,
+    grande: 3,
+  };
+  let numberOfFlavors = 0; 
+  function getMaxSelectionSizeFlavor(ev = null) {
+    const sizeFlavor = menuItem?.categoryName.toLowerCase();
+    const flavorSizeMin = sizeFlavor.includes('pequena') || sizeFlavor.includes('pequeno')
+    if (flavorSizeMin) {
+      numberOfFlavors = 2;
+      if (selectedFlavors.length >= maxSelections.pequena) {
+        if (ev) {
+          ev.target.checked = false;
+        }
+        return;
+      }
+    }
+    const flavorSizeMed = sizeFlavor.includes('media') ||
+    sizeFlavor.includes('médio') ||
+    sizeFlavor.includes('média') ||
+    sizeFlavor.includes('medio');
 
+    if (flavorSizeMed) {
+      numberOfFlavors = 2;
+      if (selectedFlavors.length >= maxSelections.media) {
+        if (ev) {
+          ev.target.checked = false;
+        }
+      }
+    }
+    const flavorSizeBig = sizeFlavor.includes('grande') ||
+    sizeFlavor.includes('grandes') ||
+    sizeFlavor.includes('grande');
+    if (flavorSizeBig) {
+      numberOfFlavors = 3;
+      if (selectedFlavors.length >= maxSelections.grande) {
+        if (ev) {
+          ev.target.checked = false;
+        }
+      }
+    }
+    return true;
+  }
   async function handleAddToCartButtonClick() {
-    const hasOptions = sizes.length > 0 || extraIngredientPrices.length > 0;
+    const hasOptions = sizes.length > 0 || extraIngredientPrices.length > 0 || flavorsPrices.length > 0;
     if (hasOptions && !showPopup) {
       setShowPopup(true);
       return;
     }
-    addToCart(menuItem, selectedSize, selectedExtras);
+    addToCart(menuItem, selectedSize, selectedExtras, selectedFlavors);
     await new Promise(resolve => setTimeout(resolve, 1000));
     setShowPopup(false);
   }
@@ -33,6 +77,28 @@ export default function MenuItem(menuItem) {
     } else {
       setSelectedExtras(prev => {
         return prev.filter(e => e.name !== extraThing.name);
+      });
+    }
+  }
+  function handleFlavorClick(ev, flavor) {
+    if (ev?.target?.checked === false) {
+      setSelectedFlavors(prev => {
+        return prev.filter(e => e.name !== flavor.name);
+      });
+      return;
+    }
+    const pass = getMaxSelectionSizeFlavor(ev);
+    if (pass === false) {
+      return;
+    }
+
+    let checked = ev?.target?.checked;
+
+    if (checked) {
+      setSelectedFlavors(prev => [...prev, flavor]);
+    } else {
+      setSelectedFlavors(prev => {
+        return prev.filter(e => e.name !== flavor.name);
       });
     }
   }
@@ -47,6 +113,21 @@ export default function MenuItem(menuItem) {
   if (selectedExtras?.length > 0) {
     for (const extra of selectedExtras) {
       selectedPrice += extra.price;
+    }
+  }
+  getMaxSelectionSizeFlavor();
+
+  if (selectedFlavors?.length > 0) {
+    if (selectedFlavors.length > 1) {
+      for (const flavor of selectedFlavors) {
+        flavor.discount = flavor.price / numberOfFlavors;
+        selectedPrice += (flavor.price / numberOfFlavors)
+      }
+    }
+    if (selectedFlavors.length <= 1) {
+      for (const flavor of selectedFlavors) {
+        selectedPrice += flavor.price;
+      }
     }
   }
 
@@ -102,6 +183,31 @@ export default function MenuItem(menuItem) {
                         name={extraThing.name} />
                       {extraThing.name} +{formatFromMoney(extraThing.price)}
                     </label>
+                  ))}
+                </div>
+              )}
+              {flavorsPrices?.length > 0 && (
+                <div className="py-2">
+                  <h3 className="text-center text-gray-700">Sabores</h3>
+                  {flavorsPrices.map(flavor => (
+                    <div
+                      key={flavor.id}
+                      className="flex flex-col p-4 border-b last:border-b-0">
+                      <div className="flex items-center justify-between">
+                        <label className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            onChange={ev => handleFlavorClick(ev, flavor)}
+                            checked={selectedFlavors.map(e => e.id).includes(flavor.id)}
+                            name="flavor"/>
+                          <span className="text-md">{flavor.name}</span>
+                        </label>
+                        <span className="text-lg">{formatFromMoney(basePrice + flavor?.price)}</span>
+                      </div>
+                      <div className="text-sm text-gray-500 mt-1">
+                        {flavor.description}
+                      </div>
+                    </div>
                   ))}
                 </div>
               )}

@@ -25,6 +25,13 @@ export default function CartProduct({indexProduct,product,onRemove}) {
             ))}
           </div>
         )}
+        {product?.flavorsPrices?.length > 0 && (
+          <div className="text-sm text-gray-500">
+            {product.flavorsPrices.map(flavor => (
+              <div key={flavor.name}>{flavor.name} {formatFromMoney(flavor?.price)}</div>
+            ))}
+          </div>
+        )}
       </div>
       <div className="text-lg font-semibold">
         {formatFromMoney(cartProductPrice(product))}

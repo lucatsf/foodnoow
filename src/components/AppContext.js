@@ -15,6 +15,15 @@ export function cartProductPrice(cartProduct) {
       price += extra.price;
     }
   }
+  if (cartProduct.flavorsPrices?.length > 0) {
+    for (const flavor of cartProduct.flavorsPrices) {
+      if (flavor?.discount) {
+        price += flavor.discount;
+      } else {
+        price += flavor.price;
+      }
+    }
+  }
   return price;
 }
 
@@ -50,9 +59,9 @@ export function AppProvider({children, session}) {
     }
   }
 
-  function addToCart(product, size=null, extras=[]) {
+  function addToCart(product, size=null, extras=[], flavorsPrices=[]) {
     setCartProducts(prevProducts => {
-      const cartProduct = {...product, size, extras};
+      const cartProduct = {...product, size, extras, flavorsPrices};
       const newProducts = [...prevProducts, cartProduct];
       saveCartProductsToLocalStorage(newProducts);
       return newProducts;

@@ -8,6 +8,15 @@ export default class MenuItemService {
 
   async create(data) {
     const id = this.uuid;
+    for (const size of data.sizes) {
+      size.id = uuidv4();
+    }
+    for (const extraIngredientPrice of data.extraIngredientPrices) {
+      extraIngredientPrice.id = uuidv4();
+    }
+    for (const flavorPrice of data.flavorsPrices) {
+      flavorPrice.id = uuidv4();
+    }
     return await MenuItem.create({
       ...data,
       id
@@ -15,6 +24,21 @@ export default class MenuItemService {
   }
 
   async update(data) {
+    for (const size of data.sizes) {
+      if (!size?.id) {
+        size.id = uuidv4();
+      }
+    }
+    for (const extraIngredientPrice of data.extraIngredientPrices) {
+      if (!extraIngredientPrice?.id) {
+        extraIngredientPrice.id = uuidv4();
+      }
+    }
+    for (const flavorPrice of data.flavorsPrices) {
+      if (!flavorPrice?.id) {
+        flavorPrice.id = uuidv4();
+      }
+    }
     return await MenuItem.update(data);
   }
 

@@ -59,6 +59,9 @@ export default class CheckoutService {
       delivery = company?.delivery || 0;
     }
     const user = await userAuth();
+    if (!user) {
+      throw new Error('Usuário não encontrado');
+    }
     const checkout = {
       ...address,
       client: user?.name,

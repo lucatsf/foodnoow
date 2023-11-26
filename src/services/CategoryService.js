@@ -34,7 +34,10 @@ export default class CategoryService {
     if (name) {
       search.name = name;
     }
-    return await Category.scan(search).exec();
+    const categories = await Category.scan(search).exec();
+    return categories.sort((a, b) => {
+      return new Date(a.createdAt) - new Date(b.createdAt);
+    });
   }
 
   async find({company_id, id}) {

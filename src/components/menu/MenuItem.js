@@ -83,7 +83,7 @@ export default function MenuItem(menuItem) {
   function handleFlavorClick(ev, flavor) {
     if (ev?.target?.checked === false) {
       setSelectedFlavors(prev => {
-        return prev.filter(e => e.name !== flavor.name);
+        return prev.filter(e => e.name !== flavor?.name);
       });
       return;
     }
@@ -108,11 +108,11 @@ export default function MenuItem(menuItem) {
 
   let selectedPrice = basePrice;
   if (selectedSize) {
-    selectedPrice += selectedSize.price;
+    selectedPrice += selectedSize?.price;
   }
   if (selectedExtras?.length > 0) {
     for (const extra of selectedExtras) {
-      selectedPrice += extra.price;
+      selectedPrice += extra?.price;
     }
   }
   getMaxSelectionSizeFlavor();
@@ -120,13 +120,13 @@ export default function MenuItem(menuItem) {
   if (selectedFlavors?.length > 0) {
     if (selectedFlavors.length > 1) {
       for (const flavor of selectedFlavors) {
-        flavor.discount = flavor.price / numberOfFlavors;
-        selectedPrice += (flavor.price / numberOfFlavors)
+        flavor.discount = flavor?.price / numberOfFlavors;
+        selectedPrice += (flavor?.price / numberOfFlavors)
       }
     }
     if (selectedFlavors.length <= 1) {
       for (const flavor of selectedFlavors) {
-        selectedPrice += flavor.price;
+        selectedPrice += flavor?.price;
       }
     }
   }
@@ -191,21 +191,21 @@ export default function MenuItem(menuItem) {
                   <h3 className="text-center text-gray-700">Sabores</h3>
                   {flavorsPrices.map(flavor => (
                     <div
-                      key={flavor.id}
+                      key={flavor?.id}
                       className="flex flex-col p-4 border-b last:border-b-0">
                       <div className="flex items-center justify-between">
                         <label className="flex items-center gap-2">
                           <input
                             type="checkbox"
                             onChange={ev => handleFlavorClick(ev, flavor)}
-                            checked={selectedFlavors.map(e => e.id).includes(flavor.id)}
+                            checked={selectedFlavors.map(e => e.id).includes(flavor?.id)}
                             name="flavor"/>
-                          <span className="text-md">{flavor.name}</span>
+                          <span className="text-md">{flavor?.name}</span>
                         </label>
                         <span className="text-lg">{formatFromMoney(basePrice + flavor?.price)}</span>
                       </div>
                       <div className="text-sm text-gray-500 mt-1">
-                        {flavor.description}
+                        {flavor?.description}
                       </div>
                     </div>
                   ))}

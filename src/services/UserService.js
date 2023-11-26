@@ -37,10 +37,15 @@ export default class UserService {
       const userInfoService = new UserInfoService();
       const infos = await userInfoService.getAll({company_id});
       const emails = infos.map(info => info.email);
-      const result = await User.scan({email: { in: emails }}).exec();
+      const result = await User.scan({
+        email: { in: emails },
+      }).exec();
       return result;
     }
-    return await User.scan(search).exec();
+    const user = await User.scan(search).exec();
+    return user.sort((a, b) => {
+      return new Date(a.createdAt) - new Date(b.createdAt);
+    });
   }
 
   async find({email, id}) {

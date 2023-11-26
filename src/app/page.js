@@ -12,12 +12,18 @@ export default function Home() {
           subHeader={'Nossa história'}
           mainHeader={'Sobre nós'}
         />
-        <div className="text-gray-500 max-w-md mx-auto mt-4 flex flex-col gap-4">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni minima odit recusandae. Illum ipsa non repudiandae? Eum ipsam iste quos suscipit tempora? Aperiam esse fugiat inventore laboriosam officiis quam rem!
+        <div className="text-gray-500 max-w-md mx-auto mt-4 flex flex-col gap-4 items-center">
+          <p className="text-center text-justify">
+            Nossa jornada começou com a paixão pela gastronomia e o desejo de conectar pessoas aos sabores do mundo.
           </p>
-          <p>At consectetur delectus ducimus est facere iure molestias obcaecati quaerat vitae voluptate? Aspernatur dolor explicabo iste minus molestiae pariatur provident quibusdam saepe?</p>
-          <p>Laborum molestias neque nulla obcaecati odio quia quod reprehenderit sit vitae voluptates? Eos, tenetur.</p>
+          <p className="text-center text-justify">
+            Somos mais que um serviço de entrega, somos uma comunidade de amantes da comida. Uma comunidade que cresce a cada dia,
+            alimentada pela confiança de nossos usuários e pelo comprometimento inabalável com a qualidade.
+            Junte-se a nós nesta jornada de descoberta e sabor.
+          </p>
+          <p className="text-center text-justify">
+            Porque em cada prato que entregamos, há uma história para contar, uma cultura para explorar e um novo mundo a saborear.
+          </p>
         </div>
       </section>
       <section className="text-center my-8" id="contact">

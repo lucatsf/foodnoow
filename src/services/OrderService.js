@@ -41,6 +41,9 @@ export default class OrderService {
     if (company_id) {
       search.company_id = { eq: company_id };
     }
-    return await this.dbOrder.scan(search).exec();
+    const orders = await this.dbOrder.scan(search).exec();
+    return orders.sort((a, b) => {
+      return new Date(a.createdAt) - new Date(b.createdAt);
+    });
   }
 }

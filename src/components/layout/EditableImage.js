@@ -1,14 +1,14 @@
 import Image from "next/image";
 import toast from "react-hot-toast";
 
-export default function EditableImage({link, setLink}) {
+export default function EditableImage({link, setLink, local}) {
 
   async function handleFileChange(ev) {
     const files = ev.target.files;
     if (files?.length === 1) {
       const data = new FormData;
       data.set('file', files[0]);
-
+      data.set('local', local);
       const uploadPromise = fetch('/api/upload', {
         method: 'POST',
         body: data,

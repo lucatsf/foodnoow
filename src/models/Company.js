@@ -29,6 +29,10 @@ const schema = new dynamoose.Schema({
   city: String,
   state: String,
   delivery: Number,
+  numberOfOrders: {
+    type: Number,
+    default: 0
+  },
 }, {
     saveUnknown: true,
     timestamps: true

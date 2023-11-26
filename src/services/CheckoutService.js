@@ -75,6 +75,12 @@ export default class CheckoutService {
     };
 
     const result = await Checkout.create(checkout);
+
+    await Company.update({
+      id: company?.id,
+      numberOfOrders: company?.numberOfOrders + 1
+    });
+    
     if(result && company?.phone) {
       const deliveryMess = checkout?.deliveryDetails?.delivery === 'delivery' ? 'Entregar' : 'Cliente retira';
       const changeFor = checkout?.deliveryDetails?.changeFor ? `Troco para R$ ${checkout?.deliveryDetails?.changeFor}` : 'Sem troco';
@@ -114,6 +120,15 @@ export default class CheckoutService {
       await gzappy({
         phone: company?.phone,
         message
+      });
+      const messageForUser = [
+        `${user?.name}, seu pedido foi realizado com sucesso.`,
+        `Total: ${formatFromMoney(checkout?.total)}`,
+        `Acompanhe o status do seu pedido em: https://www.foodnoow.com.br/`
+      ];
+      await gzappy({
+        phone: checkout?.phone,
+        message: messageForUser
       });
     }
     return result;
@@ -203,7 +218,10 @@ export default class CheckoutService {
       search.company_id = { eq: company_id };
     }
 
-    return await Checkout.scan(search).exec();
+    const checkouts = await Checkout.scan(search).exec();
+    return checkouts.sort((a, b) => {
+      return new Date(a.createdAt) - new Date(b.createdAt);
+    });
   }
 
   cartProductPrice(cartProduct) {

@@ -66,6 +66,9 @@ export default function EditMenuItemPage() {
       for (const extraIngredientPrice of data.extraIngredientPrices) {
         extraIngredientPrice.price = getValueMoney(extraIngredientPrice.price);
       }
+      for (const flavorPrice of data.flavorsPrices) {
+        flavorPrice.price = getValueMoney(flavorPrice.price);
+      }
       data.basePrice = getValueMoney(data.basePrice);
       const response = await fetch('/api/menu-items', {
         method: 'PUT',

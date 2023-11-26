@@ -1,8 +1,10 @@
 'use client';
 import {CartContext, cartProductPrice} from "@/components/AppContext";
+import { useProfile } from "@/components/UseProfile";
 import AddressInputs from "@/components/layout/AddressInputs";
 import SectionHeaders from "@/components/layout/SectionHeaders";
 import CartProduct from "@/components/menu/CartProduct";
+import toast from "react-hot-toast";
 import { formatFromMoney } from "@/libs/formatInput";
 import {useParams} from "next/navigation";
 import {useContext, useEffect, useState} from "react";
@@ -11,7 +13,49 @@ export default function OrderPage() {
   const {clearCart} = useContext(CartContext);
   const [order, setOrder] = useState();
   const [loadingOrder, setLoadingOrder] = useState(true);
+  const [allStatus, setAllStatus] = useState([
+    {id: 1, name: 'Preparando'},
+    {id: 2, name: 'A caminho'},
+    {id: 3, name: 'Entregue'},
+    {id: 4, name: 'Cancelado'}
+  ]);
+  const [status, setStatus] = useState(1);
+  const [disabled, setDisabled] = useState(false);
   const {id} = useParams();
+  const {data:profile} = useProfile();
+
+  const handleUpdateStatusOrder = async () => {
+    const savingPromise = new Promise(async (resolve, reject) => {
+      setDisabled(true);
+      if (!id || id === '') {
+        reject('O id do pedido é obrigatório');
+      }
+      if (!status || status === '') {
+        reject('O status do pedido é obrigatório');
+      }
+      const response = await fetch('/api/orders', {
+        method: 'PUT',
+        body: JSON.stringify({
+          orderId: id,
+          status
+        })
+      });
+      if (response?.ok) {
+        setDisabled(false);
+        resolve();
+      } else {
+        setDisabled(false);
+        reject('Erro ao atualizar status do pedido');
+      }
+    });
+    await toast.promise(savingPromise, {
+      loading: 'Atualizando status do pedido...',
+      success: 'Status do pedido atualizado com sucesso!',
+      error: (err) => err.toString(),
+    });
+    setDisabled(false);
+  }
+
   useEffect(() => {
     if (typeof window.console !== "undefined") {
       if (window.location.href.includes('clear-cart=1')) {
@@ -24,6 +68,7 @@ export default function OrderPage() {
         res.json().then(orderData => {
           setOrder(orderData);
           setLoadingOrder(false);
+          setStatus(allStatus.find(s => s.name === orderData?.status)?.id);
         });
       })
     }
@@ -76,6 +121,31 @@ export default function OrderPage() {
                 {formatFromMoney(order?.total)}
               </div>
             </div>
+            {profile?.admin && (
+              <div className="grow">
+                <label>Status do Pedido</label>
+                <select
+                  value={status}
+                  onChange={ev => setStatus(ev.target.value)}
+                >
+                  {allStatus.map(s => (
+                    <option
+                      key={s.id}
+                      value={s.id}
+                    >
+                      {s.name}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  className="button"
+                  onClick={handleUpdateStatusOrder}
+                  disabled={disabled}
+                >
+                  Atualizar Status
+                </button>
+              </div>
+            )}
           </div>
           <div>
             <div className="bg-gray-100 p-4 rounded-lg">

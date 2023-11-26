@@ -28,3 +28,13 @@ export async function GET(req) {
   }
   return response({error: 'Usuário não encontrado'}, {req})
 }
+
+export async function PUT(req) {
+  await checkLimiter(req);
+  const {orderId, status} = await req.json();
+  if (await isAdmin()) {
+    const orderService = new CheckoutService();
+    const result = await orderService.update({id: orderId, status});
+    return response(result, {req})
+  }
+}

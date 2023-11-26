@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { MenuItem } from "@/models/MenuItem";
 import { Company } from "@/models/Company";
 import { userAuth } from "@/app/api/auth/[...nextauth]/route";
+import { gzappy } from "@/libs/gzappy";
+import { formatFromMoney } from "@/libs/formatInput";
 
 const { Checkout } = require("@/models/Checkout");
 
@@ -52,7 +54,10 @@ export default class CheckoutService {
     if (!company) {
       throw new Error('Empresa não encontrada');
     }
-    const delivery = company?.delivery || 0;
+    let delivery = 0;
+    if (deliveryDetails?.delivery === 'delivery') {
+      delivery = company?.delivery || 0;
+    }
     const user = await userAuth();
     const checkout = {
       ...address,
@@ -66,9 +71,106 @@ export default class CheckoutService {
       total: subtotal + delivery,
       status: 'Preparando',
       menuItems,
-      deliveryDetails: deliveryDetails
+      deliveryDetails
+    };
+
+    const result = await Checkout.create(checkout);
+    if(result && company?.phone) {
+      const deliveryMess = checkout?.deliveryDetails?.delivery === 'delivery' ? 'Entregar' : 'Cliente retira';
+      const changeFor = checkout?.deliveryDetails?.changeFor ? `Troco para R$ ${checkout?.deliveryDetails?.changeFor}` : 'Sem troco';
+      const paymentMethod = checkout?.deliveryDetails?.paymentMethod === 'card' ? 'Cartão' : `Dinheiro - ${changeFor}`
+      const order = checkout?.menuItems.map((item) => {
+        const extras = item?.extras?.map((extra) => {
+          return `${extra?.name} - ${formatFromMoney(extra?.price)}`
+        });
+        const sizes = item?.sizes?.map((size) => {
+          return `${size?.name} - ${formatFromMoney(size?.price)}`
+        });
+        const flavors = item?.flavorsPrices?.map((flavor) => {
+          return `${flavor?.name} - ${formatFromMoney(flavor?.discount)}`
+        });
+        let text = '';
+        if (extras?.length > 0) {
+          text += extras.join(', ');
+        }
+        if (sizes?.length > 0) {
+          text += sizes.join(', ');
+        }
+        if (flavors?.length > 0) {
+          text += flavors.join(', ');
+        }
+        return `${text}`
+      });
+      
+      const message = [
+        `Novo pedido de ${user?.name} no valor de ${formatFromMoney(checkout?.total)}`,
+        `Endereço: ${checkout?.streetAddress}, ${checkout?.number}, ${checkout?.neighborhood}`,
+        `Telefone: ${checkout?.phone}`,
+        `Detalhes da entrega: ${deliveryMess} - Pagamento em ${paymentMethod}`,
+        `Pedido:`,
+        `${order?.join(', ')}`,
+        `Total: ${formatFromMoney(checkout?.total)}`
+      ];
+      await gzappy({
+        phone: company?.phone,
+        message
+      });
     }
-    return await Checkout.create(checkout);
+    return result;
+  }
+
+  async update({id, status}) {
+    const checkout = await Checkout.get(id);
+    if (!checkout) {
+      throw new Error('Pedido não encontrado');
+    }
+    const allStatus = [
+      {id: 1, name: 'Preparando'},
+      {id: 2, name: 'A caminho'},
+      {id: 3, name: 'Entregue'},
+      {id: 4, name: 'Cancelado'}
+    ];
+    const statusFound = allStatus.find(s => s.id == status);
+    if (!statusFound) {
+      throw new Error('Status não encontrado');
+    }
+    checkout.status = statusFound.name;
+    delete checkout.createdAt;
+    delete checkout.updatedAt;
+    const result = await Checkout.update(checkout);
+
+    let message = []
+    if (statusFound.id === 1) {
+      message = [
+        `${checkout?.company_name}`,
+        `${checkout?.client}, estamos ${statusFound.name} seu pedido.`,
+      ]
+    }
+    if (statusFound.id === 2) {
+      message = [
+        `${checkout?.company_name}`,
+        `${checkout?.client}, seu pedido está ${statusFound.name}.`,
+      ]
+    }
+    if (statusFound.id === 3) {
+      message = [
+        `${checkout?.company_name}`,
+        `${checkout?.client}, seu pedido foi ${statusFound.name}.`,
+      ]
+    }
+    if (statusFound.id === 4) {
+      message = [
+        `${checkout?.company_name}`,
+        `${checkout?.client}, seu pedido foi ${statusFound.name}.`,
+      ]
+    }
+
+    await gzappy({
+      phone: checkout?.phone,
+      message
+    });
+
+    return result;
   }
 
   async find({id, userEmail, company_id}) {
@@ -112,6 +214,15 @@ export default class CheckoutService {
     if (cartProduct.extras?.length > 0) {
       for (const extra of cartProduct.extras) {
         price += extra.price;
+      }
+    }
+    if (cartProduct.flavorsPrices?.length > 0) {
+      for (const flavor of cartProduct.flavorsPrices) {
+        if (flavor?.discount) {
+          price += flavor.discount;
+        } else {
+          price += flavor.price;
+        }
       }
     }
     return price;

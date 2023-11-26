@@ -2,14 +2,15 @@
 import {signIn} from "next-auth/react";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {useRouter} from "next/navigation";
+import { CartContext } from "@/components/AppContext";
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginInProgress, setLoginInProgress] = useState(false);
-
+  const {cartProducts} = useContext(CartContext);
   const router = useRouter();
 
   async function handleFormSubmit(ev) {
@@ -30,6 +31,10 @@ export default function LoginPage() {
       });
       if (response?.ok) {
         setLoginInProgress(false);
+        if (cartProducts?.length > 0) {
+          router.push('/cart');
+          return resolve();
+        }
         router.push('/');
         resolve()
       } else {

@@ -54,7 +54,6 @@ export async function PUT(req) {
     if (
       (!data?.name || data?.name == '')||
       (!data.description || data.description == '') ||
-      (!data.basePrice || data.basePrice == '') ||
       (!data.category_id || data.category_id == '')
     ) {
       throw new Error('Por favor, preencha todos os campos');

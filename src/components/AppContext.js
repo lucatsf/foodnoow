@@ -20,7 +20,7 @@ export function cartProductPrice(cartProduct) {
       if (flavor?.discount) {
         price += flavor.discount;
       } else {
-        price += flavor.price;
+        price += flavor?.price;
       }
     }
   }

@@ -221,7 +221,7 @@ export default class CheckoutService {
         if (flavor?.discount) {
           price += flavor.discount;
         } else {
-          price += flavor.price;
+          price += flavor?.price;
         }
       }
     }

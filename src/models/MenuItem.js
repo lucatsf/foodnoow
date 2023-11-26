@@ -16,6 +16,7 @@ const schema = new dynamoose.Schema({
   basePrice: Number,
   sizes: Array,
   extraIngredientPrices: Array,
+  flavorsPrices: Array,
 }, {
     saveUnknown: true,
     timestamps: true

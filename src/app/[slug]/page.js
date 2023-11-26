@@ -16,8 +16,14 @@ const PageOfCompany = () => {
     fetch('/api/menu-company?slug=' + slug).then(res => {
       res.json().then(({categories, menuItems, company}) => {
         setCategories(categories);
-        setMenuItems(menuItems);
         setCompany(company);
+        menuItems = menuItems.map(item => {
+          return {
+            ...item,
+            delivery: company?.delivery || 0
+          }
+        });
+        setMenuItems(menuItems);
       })
     });
   }, []);
@@ -33,9 +39,12 @@ const PageOfCompany = () => {
             <SectionHeaders mainHeader={c.name} />
           </div>
           <div className="grid sm:grid-cols-3 gap-4 mt-6 mb-12">
-            {menuItems.filter(item => item.category_id === c.id).map(item => (
-              <MenuItem key={item.id} {...item} />
-            ))}
+            {menuItems.filter(item => item.category_id === c.id).map(item => {
+              item.categoryName = c.name;
+              return (
+                <MenuItem key={item.id} {...item } />
+              )
+            })}
           </div>
         </div>
       ))}

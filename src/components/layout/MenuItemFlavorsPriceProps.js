@@ -5,7 +5,7 @@ import Trash from "@/components/icons/Trash";
 import { formatFromMoney } from "@/libs/formatInput";
 import {useState} from "react";
 
-export default function MenuItemPriceProps({name,addLabel,props,setProps}) {
+export default function MenuItemFlavorsPriceProps({name,addLabel,props,setProps}) {
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -44,31 +44,40 @@ export default function MenuItemPriceProps({name,addLabel,props,setProps}) {
         <span>({props?.length})</span>
       </button>
       <div className={isOpen ? 'block' : 'hidden'}>
-        {props?.length > 0 && props.map((size,index) => (
-          <div key={index} className="flex items-end gap-2">
+        {props?.length > 0 && props.map((data,index) => (
+          <>
+            <div key={index} className="flex items-end gap-2">
+              <div>
+                <label>Nome</label>
+                <input type="text"
+                      placeholder="Tamanho"
+                      value={data.name}
+                      onChange={ev => editProp(ev, index, 'name')}
+                />
+              </div>
+              <div>
+                <label>Preço</label>
+                <input type="text" placeholder="Preço"
+                      value={formatFromMoney(data.price)}
+                      onChange={ev => editProp(ev, index, 'price')}
+                />
+              </div>
+              <div>
+                <button type="button"
+                        onClick={() => removeProp(index)}
+                        className="bg-white mb-2 px-2">
+                  <Trash />
+                </button>
+              </div>
+            </div>
             <div>
-              <label>Nome</label>
-              <input type="text"
-                     placeholder="Tamanho"
-                     value={size.name}
-                     onChange={ev => editProp(ev, index, 'name')}
+              <label>Descrição</label>
+              <input type="text" placeholder="Descrição"
+                value={data?.description}
+                onChange={ev => editProp(ev, index, 'description')}
               />
             </div>
-            <div>
-              <label>Extra</label>
-              <input type="text" placeholder="Preço"
-                     value={formatFromMoney(size.price)}
-                     onChange={ev => editProp(ev, index, 'price')}
-              />
-            </div>
-            <div>
-              <button type="button"
-                      onClick={() => removeProp(index)}
-                      className="bg-white mb-2 px-2">
-                <Trash />
-              </button>
-            </div>
-          </div>
+          </>
         ))}
         <button
           type="button"

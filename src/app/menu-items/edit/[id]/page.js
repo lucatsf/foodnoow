@@ -34,7 +34,6 @@ export default function EditMenuItemPage() {
       if (
         (!data?.name || data?.name == '')||
         (!data.description || data.description == '') ||
-        (!data.basePrice || data.basePrice == '') ||
         (!data.category_id || data.category_id == '')
       ) {
         reject('Por favor, preencha todos os campos');
@@ -66,6 +65,9 @@ export default function EditMenuItemPage() {
       }
       for (const extraIngredientPrice of data.extraIngredientPrices) {
         extraIngredientPrice.price = getValueMoney(extraIngredientPrice.price);
+      }
+      for (const flavorPrice of data.flavorsPrices) {
+        flavorPrice.price = getValueMoney(flavorPrice.price);
       }
       data.basePrice = getValueMoney(data.basePrice);
       const response = await fetch('/api/menu-items', {

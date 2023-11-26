@@ -74,6 +74,7 @@ export default function Header() {
           onClick={() => setMobileNavOpen(false)}
           className="md:hidden p-4 bg-gray-200 rounded-lg mt-2 flex flex-col gap-2 text-center">
           <Link href={'/'}>Inicio</Link>
+          {userName && (<Link href={'/orders'}>Meus Pedidos</Link>)}
           <Link href={'/menu'}>Restaurantes</Link>
           <Link href={'/#about'}>Sobre</Link>
           <Link href={'/#contact'}>Contato</Link>
@@ -86,6 +87,7 @@ export default function Header() {
 
           
           <Link href={'/'}>Inicio</Link>
+          {userName && (<Link href={'/orders'}>Pedidos</Link>)}
           <Link href={'/menu'}>Restaurantes</Link>
           <Link href={'/#about'}>Sobre</Link>
           <Link href={'/#contact'}>Contato</Link>
@@ -96,8 +98,8 @@ export default function Header() {
             <ShoppingCart />
             {cartProducts?.length > 0 && (
               <span className="absolute -top-2 -right-4 bg-primary text-white text-xs py-1 px-1 rounded-full leading-3">
-            {cartProducts.length}
-          </span>
+                {cartProducts.length}
+              </span>
             )}
           </Link>
         </nav>

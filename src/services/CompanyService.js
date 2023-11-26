@@ -20,6 +20,7 @@ export default class CompanyService {
       complement: data.complement,
       city: data.city,
       state: data.state,
+      delivery: data.delivery,
     });
   }
 

@@ -37,7 +37,19 @@ export default class CategoryService {
     return await Category.scan(search).exec();
   }
 
-  async find({company_id}) {
+  async find({company_id, id}) {
+    let search = {};
+    if(id) {
+      search.id = { eq: id };
+    }
+    if(company_id) {
+      search.company_id = { eq: company_id}
+    }
+    const category = await Category.scan(search).exec();
+    return category[0];
+  }
+
+  async findToCompany({company_id}) {
     return await Category.scan('company_id').eq(company_id).exec();
   }
 }

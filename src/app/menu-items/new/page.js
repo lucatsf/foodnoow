@@ -20,7 +20,6 @@ export default function NewMenuItemPage() {
       if (
         (!data?.name || data?.name == '')||
         (!data.description || data.description == '') ||
-        (!data.basePrice || data.basePrice == '') ||
         (!data.category_id || data.category_id == '')
       ) {
         reject('Por favor, preencha todos os campos');
@@ -47,11 +46,27 @@ export default function NewMenuItemPage() {
           }
         }
       }
+      if (data?.flavorsPrices?.length > 0) {
+        for (const flavorPrice of data.flavorsPrices) {
+          if (
+            !flavorPrice?.name ||
+            flavorPrice.name == '' ||
+            !flavorPrice?.price ||
+            flavorPrice.price == ''
+          ) {
+            reject('Por favor, preencha todos os campos de sabor');
+            return;
+          }
+        }
+      }
       for (const size of data.sizes) {
         size.price = getValueMoney(size.price);
       }
       for (const extraIngredientPrice of data.extraIngredientPrices) {
         extraIngredientPrice.price = getValueMoney(extraIngredientPrice.price);
+      }
+      for (const flavorPrice of data.flavorsPrices) {
+        flavorPrice.price = getValueMoney(flavorPrice.price);
       }
       data.basePrice = getValueMoney(data.basePrice);
       const response = await fetch('/api/menu-items', {

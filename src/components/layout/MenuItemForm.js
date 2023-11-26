@@ -1,7 +1,6 @@
-import Plus from "@/components/icons/Plus";
-import Trash from "@/components/icons/Trash";
 import EditableImage from "@/components/layout/EditableImage";
 import MenuItemPriceProps from "@/components/layout/MenuItemPriceProps";
+import MenuItemFlavorsPriceProps from "./MenuItemFlavorsPriceProps";
 import { formatFromMoney } from "@/libs/formatInput";
 import {useEffect, useState} from "react";
 
@@ -17,6 +16,7 @@ export default function MenuItemForm({onSubmit,menuItem}) {
     extraIngredientPrices,
     setExtraIngredientPrices,
   ] = useState(menuItem?.extraIngredientPrices || []);
+  const [flavorsPrices, setFlavorsPrices] = useState(menuItem?.flavorsPrices || []);
 
   useEffect(() => {
     fetch('/api/categories').then(res => {
@@ -33,7 +33,7 @@ export default function MenuItemForm({onSubmit,menuItem}) {
     <form
       onSubmit={ev =>
         onSubmit(ev, {
-          image,name,description,basePrice,sizes,extraIngredientPrices,category_id:category,
+          image,name,description,basePrice,sizes,extraIngredientPrices,category_id:category,flavorsPrices
         })
       }
       className="mt-8 max-w-2xl mx-auto">
@@ -68,14 +68,24 @@ export default function MenuItemForm({onSubmit,menuItem}) {
             value={formatFromMoney(basePrice)}
             onChange={ev => setBasePrice(ev.target.value)}
           />
-          <MenuItemPriceProps name={'Tamanhos'}
-                              addLabel={'Adicionar tamanho'}
-                              props={sizes}
-                              setProps={setSizes} />
-          <MenuItemPriceProps name={'Acompanhamentos'}
-                              addLabel={'Adicionar acompanhamento'}
-                              props={extraIngredientPrices}
-                              setProps={setExtraIngredientPrices}/>
+          <MenuItemPriceProps
+            name={'Tamanhos'}
+            addLabel={'Adicionar tamanho'}
+            props={sizes}
+            setProps={setSizes}
+          />
+          <MenuItemPriceProps
+            name={'Acompanhamentos'}
+            addLabel={'Adicionar acompanhamento'}
+            props={extraIngredientPrices}
+            setProps={setExtraIngredientPrices}
+          />
+          <MenuItemFlavorsPriceProps
+            name={'Sabores'}
+            addLabel={'Adicionar Sabores'}
+            props={flavorsPrices}
+            setProps={setFlavorsPrices}
+          />
           <button type="submit">Save</button>
         </div>
       </div>

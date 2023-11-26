@@ -15,8 +15,8 @@ export async function GET(req) {
     const dbMenuItem = new MenuItemService();
     
     const company = await dbCompany.findBySlug(slug);
-    const categories = await dbCategory.find({company_id: company.id});
-    const menuItems = await dbMenuItem.find({company_id: company.id});
+    const categories = await dbCategory.findToCompany({company_id: company.id});
+    const menuItems = await dbMenuItem.findToCompany({company_id: company.id});
     return response({company, categories, menuItems}, {req})
   }
   

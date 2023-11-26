@@ -10,6 +10,7 @@ section.hero{
 select,
 input[type="email"],
 input[type="password"],
+input[type="name"],
 input[type="tel"],
 input[type="text"] {
     @apply block w-full mb-2 rounded-xl;

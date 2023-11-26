@@ -63,11 +63,15 @@ export async function userAuth() {
 
   const company_id = userInfo?.company_id;
   const companyService = new CompanyService();
-  const company = await companyService.find({id: company_id});
+  let company = null;
+  if (company_id) {
+    company = await companyService.find({id: company_id});
+  }
+   
   return {
     ...user,
     ...userInfo,
-    company: company[0]
+    company: company ? company : null,
   }
 }
 

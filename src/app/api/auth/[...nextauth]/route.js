@@ -1,6 +1,7 @@
 import NextAuth, {getServerSession} from "next-auth";
 import UserService from "@/services/UserService";
 import UserInfoService from "@/services/UserInfoService";
+import CompanyService from "@/services/CompanyService";
 import { authOptions } from "@/libs/auth";
 
 
@@ -59,9 +60,14 @@ export async function userAuth() {
   }
   const userInfoService = new UserInfoService();
   const userInfo = await userInfoService.find({email: userEmail});
+
+  const company_id = userInfo?.company_id;
+  const companyService = new CompanyService();
+  const company = await companyService.find({id: company_id});
   return {
     ...user,
     ...userInfo,
+    company: company[0]
   }
 }
 

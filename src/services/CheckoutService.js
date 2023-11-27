@@ -126,9 +126,10 @@ export default class CheckoutService {
         message
       });
       const messageForUser = [
-        `${user?.name}, seu pedido foi realizado com sucesso.`,
+        `${user?.name}, seu pedido no estabelecimento ${checkout?.company_name} foi realizado com sucesso.`,
         `Total: ${formatFromMoney(checkout?.total)}`,
-        `Acompanhe o status do seu pedido em: https://www.foodnoow.com.br/`
+        `Acompanhe o status do seu pedido em: https://www.foodnoow.com.br/`,
+        `Qualquer dúvida, entre em contato com o estabelecimento pelo telefone ${company?.phone}`
       ];
       await gzappy({
         phone: checkout?.phone,
@@ -161,24 +162,28 @@ export default class CheckoutService {
     let message = []
     if (statusFound.id === 1) {
       message = [
+        `Pedido - ${checkout?.company_name}`,
         `${checkout?.company_name}`,
         `${checkout?.client}, estamos ${statusFound.name} seu pedido.`,
       ]
     }
     if (statusFound.id === 2) {
       message = [
+        `Pedido - ${checkout?.company_name}`,
         `${checkout?.company_name}`,
         `${checkout?.client}, seu pedido está ${statusFound.name}.`,
       ]
     }
     if (statusFound.id === 3) {
       message = [
+        `Pedido - ${checkout?.company_name}`,
         `${checkout?.company_name}`,
         `${checkout?.client}, seu pedido foi ${statusFound.name}.`,
       ]
     }
     if (statusFound.id === 4) {
       message = [
+        `Pedido - ${checkout?.company_name}`,
         `${checkout?.company_name}`,
         `${checkout?.client}, seu pedido foi ${statusFound.name}.`,
       ]

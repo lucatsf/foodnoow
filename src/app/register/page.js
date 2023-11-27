@@ -52,27 +52,27 @@ export default function RegisterPage() {
         </div>
       )}
       <form className="block max-w-xs mx-auto" onSubmit={handleFormSubmit}>
-        <input type="name" placeholder="name" value={name}
+        <input type="name" placeholder="Seu nome" value={name}
                 disabled={creatingUser}
                 onChange={ev => setName(ev.target.value)} />
-        <input type="email" placeholder="email" value={email}
+        <input type="email" placeholder="Email" value={email}
                disabled={creatingUser}
                onChange={ev => setEmail(ev.target.value)} />
-        <input type="password" placeholder="password" value={password}
+        <input type="password" placeholder="Sua senha" value={password}
                disabled={creatingUser}
                 onChange={ev => setPassword(ev.target.value)}/>
         <button type="submit" disabled={creatingUser}>
           Confirmar
         </button>
-        <div className="my-4 text-center text-gray-500">
+        {/* <div className="my-4 text-center text-gray-500">
           ou entre com o Google
-        </div>
-        <button
+        </div> */}
+        {/* <button
           onClick={() => signIn('google', {callbackUrl:'/'})}
           className="flex gap-4 justify-center">
           <Image src={'/google.png'} alt={''} width={24} height={24} />
           Login com Google
-        </button>
+        </button> */}
         <div className="text-center my-4 text-gray-500 border-t pt-4">
           Já tem uma conta?{' '}
           <Link className="underline" href={'/login'}>Login aqui &raquo;</Link>

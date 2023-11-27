@@ -153,6 +153,9 @@ export default function CartPage() {
     <section className="max-w-2xl mx-auto mt-8">
       <div className="text-center">
         <SectionHeaders mainHeader="Carrinho" />
+        {disabled && (
+          <p className="mt-4">Realize o seu cadastro no Foodnoow ou faça o login ara continuar a colocar mais coisas no seu carrinho 😄</p>
+        )}
       </div>
       <div className="mt-8 grid gap-8 sm:grid-cols-1 md:grid-cols-2">
         <div>
@@ -187,11 +190,13 @@ export default function CartPage() {
               addressProps={address}
               setAddressProp={handleAddressChange}
               setChangeValues={setDisabled}
+              disabled={disabled}
             />
             <MethodPayment
               deliveryDefault={deliveryDefault}
               deliveryPrice={setDeliveryPrice}
               deliveryDetails={setDeliveryDetails}
+              disabled={disabled}
             />
             <button
               className="w-full mt-4 bg-red-500 text-white py-2 rounded hover:bg-red-600 disabled:opacity-50"

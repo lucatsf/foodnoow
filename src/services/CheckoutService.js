@@ -48,6 +48,7 @@ export default class CheckoutService {
         throw new Error('O produto não tem um item de menu associado');
       }
       subtotal += this.cartProductPrice(cartProduct);
+      delete cartProduct.size;
     }
 
     const company = await Company.get(companyId);
@@ -81,7 +82,7 @@ export default class CheckoutService {
 
     await Company.update({
       id: company?.id,
-      numberOfOrders: company?.numberOfOrders + 1
+      numberOfOrders: parseInt(company?.numberOfOrders || 0) + 1
     });
     
     if(result && company?.phone) {

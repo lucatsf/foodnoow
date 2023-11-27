@@ -1,8 +1,6 @@
 import { useEffect } from "react";
-import { useProfile } from "../UseProfile";
 
 export default function AddressInputs({addressProps,setAddressProp,disabled=false, setChangeValues}) {
-  const {data:profileData} = useProfile();
   const {phone, streetAddress, city, number, neighborhood, complement} = addressProps;
   function changeValues () {
     if (typeof setChangeValues === 'undefined' || setChangeValues === null) {

@@ -66,6 +66,7 @@ export default function MethodPayment(props) {
         <div className="mt-2">
           <label className="inline-flex items-center">
             <input
+              disabled={props.disabled}
               type="radio"
               className="form-radio"
               name="pickUpCounter"
@@ -77,6 +78,7 @@ export default function MethodPayment(props) {
           </label>
           <label className="inline-flex items-center ml-6">
             <input
+              disabled={props.disabled}
               type="radio"
               className="form-radio"
               name="pickUpCounter"
@@ -94,6 +96,7 @@ export default function MethodPayment(props) {
           <div className="mt-2">
             <label className="inline-flex items-center">
               <input
+                disabled={props.disabled}
                 type="radio"
                 className="form-radio"
                 name="paymentMethod"
@@ -105,6 +108,7 @@ export default function MethodPayment(props) {
             </label>
             <label className="inline-flex items-center ml-6">
               <input
+                disabled={props.disabled}
                 type="radio"
                 className="form-radio"
                 name="paymentMethod"
@@ -120,6 +124,7 @@ export default function MethodPayment(props) {
                 Troco para?
               </label>
               <input
+                disabled={props.disabled}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="changeFor"
                 placeholder="Informe se precisará de troco para quanto"

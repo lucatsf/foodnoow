@@ -229,19 +229,19 @@ export default class CheckoutService {
 
   cartProductPrice(cartProduct) {
     let price = cartProduct.basePrice;
-    if (cartProduct.size) {
+    if (cartProduct?.size) {
       price += cartProduct.size.price;
     }
-    if (cartProduct.extras?.length > 0) {
+    if (cartProduct?.extras?.length > 0) {
       for (const extra of cartProduct.extras) {
         price += extra.price;
       }
     }
-    if (cartProduct.flavorsPrices?.length > 0) {
+    if (cartProduct?.flavorsPrices?.length > 0) {
       for (const flavor of cartProduct.flavorsPrices) {
         if (flavor?.discount) {
           price += flavor.discount;
-        } else {
+        } else if (flavor?.price) {
           price += flavor?.price;
         }
       }

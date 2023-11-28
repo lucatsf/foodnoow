@@ -111,7 +111,7 @@ export default function CartPage() {
     if (!profileData?.id) {
       localStorage.setItem('address-foodnoow', JSON.stringify(address));
       router.push('/login');
-      alert('Faça login para continuar');
+      toast.error('Faça login para continuar');
       return;
     }
 

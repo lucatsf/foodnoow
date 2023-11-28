@@ -9,7 +9,7 @@ export default function MenuItemRestaurant(restaurants) {
   const isRestaurantOpen = () => {
     const now = moment();
     const openTime = moment(timeopen, 'HH:mm');
-    const closeTime = moment(timeclose, 'HH:mm');
+    let closeTime = moment(timeclose === '00:00' ? '23:59' : timeclose, 'HH:mm');
   
     // Se o horário de fechamento é antes do horário de abertura, 
     // ajusta o closeTime para o dia seguinte

@@ -115,7 +115,7 @@ export default class CheckoutService {
       const order = checkout?.menuItems.map(formatMenuItem).join('\n\n');
       
       const message = [
-        `Novo pedido de *${user?.name}* no valor de *${formatFromMoney(checkout?.total)}*\n\nEndereço: *${checkout?.streetAddress}*, *${checkout?.number}*, *${checkout?.neighborhood}* - Telefone: *${checkout?.phone}*\n\nDetalhes da entrega:\n${deliveryMess} - Pagamento em *${paymentMethod}*\nPedido:\n${order}\n\nSubtotal: *${formatFromMoney(checkout?.subtotal)}*\nTaxa de entrega: *${formatFromMoney(checkout?.delivery)}*\nTotal: *${formatFromMoney(checkout?.total)}*`,
+        `Novo pedido de *${user?.name.trim()}* no valor de *${formatFromMoney(checkout?.total)}*\n\nEndereço: *${checkout?.streetAddress}, ${checkout?.number}, ${checkout?.neighborhood}* - Telefone: *${checkout?.phone}*\n\nDetalhes da entrega:\n${deliveryMess} - Pagamento em *${paymentMethod}*\nPedido:\n${order}\n\nSubtotal: *${formatFromMoney(checkout?.subtotal)}*\nTaxa de entrega: *${formatFromMoney(checkout?.delivery)}*\nTotal: *${formatFromMoney(checkout?.total)}*`,
       ];
       await gzappy({
         phone: company?.phone,

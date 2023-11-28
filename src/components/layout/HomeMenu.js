@@ -1,7 +1,5 @@
 'use client';
 import SectionHeaders from "@/components/layout/SectionHeaders";
-import MenuItem from "@/components/menu/MenuItem";
-import Image from "next/image";
 import {useEffect, useState} from "react";
 import MenuCompanyTile from "../menu/MenuCompanyTile";
 
@@ -10,7 +8,8 @@ export default function HomeMenu() {
   useEffect(() => {
     fetch('/api/companies').then(res => {
       res.json().then(companies => {
-        setBestSellers(companies.slice(-3));
+        const sortedCompanies = companies.sort((a, b) => b.numberOfOrders - a.numberOfOrders);
+        setBestSellers(sortedCompanies);
       });
     });
   }, []);

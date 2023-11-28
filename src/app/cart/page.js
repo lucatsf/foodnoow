@@ -154,7 +154,10 @@ export default function CartPage() {
       <div className="text-center">
         <SectionHeaders mainHeader="Carrinho" />
         {disabled && (
-          <p className="mt-4">Realize o seu cadastro no Foodnoow ou faça o login para continuar a colocar mais coisas no seu carrinho 😄</p>
+          <p className="mt-4 bg-white shadow-md border border-gray-200 rounded-lg p-4 text-center text-sm md:text-base lg:text-lg">
+          Realize o seu cadastro no Foodnoow ou faça o login para continuar a colocar mais coisas no seu carrinho 😄
+        </p>
+        
         )}
       </div>
       <div className="mt-8 grid gap-8 sm:grid-cols-1 md:grid-cols-2">

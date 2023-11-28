@@ -107,7 +107,7 @@ export default function CartPage() {
       return;
     }
 
-    if (!profileData?.id) {
+    if (!userLoggged?.email) {
       localStorage.setItem('address-foodnoow', JSON.stringify(address));
       router.push('/login');
       toast.error('Faça login para continuar');

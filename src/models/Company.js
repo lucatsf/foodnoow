@@ -33,6 +33,8 @@ const schema = new dynamoose.Schema({
     type: Number,
     default: 0
   },
+  timeopen: String,
+  timeclose: String
 }, {
     saveUnknown: true,
     timestamps: true

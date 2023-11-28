@@ -17,7 +17,7 @@ export default function CartPage() {
   const [address, setAddress] = useState({});
   const [disabled, setDisabled] = useState(false);
   const [deliveryPrice, setDeliveryPrice] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isClosed, setIsClosed] = useState(false);
   const [deliveryDefault, setDeliveryDefault] = useState(0);
   const [deliveryDetails, setDeliveryDetails] = useState({
     delivery: 'delivery',
@@ -72,15 +72,17 @@ export default function CartPage() {
       fetch('/api/companies?id='+cartProducts[0]?.company_id).then(async (response) => {
         const company = await response.json();
         if (company?.length > 0) {
-          const now = moment();
-          let openTime = moment(company[0]?.timeopen, 'HH:mm');
-          let closeTime = moment(company[0]?.timeclose === '00:00' ? '23:59' : company[0]?.timeclose, 'HH:mm');
-          // Se o horário de fechamento é antes do horário de abertura, 
-          // ajusta o closeTime para o dia seguinte
-          if (closeTime.isBefore(openTime)) {
-            closeTime.add(1, 'day');
+          if (company[0]?.timeopen && company[0]?.timeclose) {
+            const now = moment();
+            let openTime = moment(company[0]?.timeopen, 'HH:mm');
+            let closeTime = moment(company[0]?.timeclose === '00:00' ? '23:59' : company[0]?.timeclose, 'HH:mm');
+            // Se o horário de fechamento é antes do horário de abertura, 
+            // ajusta o closeTime para o dia seguinte
+            if (closeTime.isBefore(openTime)) {
+              closeTime.add(1, 'day');
+            }
+            setIsClosed(!now.isBetween(openTime, closeTime));
           }
-          setIsOpen(now.isBetween(openTime, closeTime));
         }
       });
     }
@@ -102,7 +104,7 @@ export default function CartPage() {
   }
   async function proceedToCheckout(ev) {
     ev.preventDefault();
-    if (!isOpen) {
+    if (isClosed) {
       toast.error('O restaurante está fechado no momento 😔');
       return;
     }

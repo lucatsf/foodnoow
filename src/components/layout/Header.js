@@ -14,7 +14,7 @@ function AuthLinks({status, userName}) {
   if (status === 'authenticated') {
     return (
       <>
-        <Link href={'/profile'} className="whitespace-nowrap">
+        <Link href={'/profile'} className="whitespace-nowrap bg-red-100 text-red-600 hover:bg-red-200 rounded-full px-4 py-2 transition duration-300 ease-in-out">
           Olá, {userName}
         </Link>
         <button

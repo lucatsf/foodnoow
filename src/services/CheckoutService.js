@@ -89,47 +89,41 @@ export default class CheckoutService {
       const deliveryMess = checkout?.deliveryDetails?.delivery === 'delivery' ? 'Entregar' : 'Cliente retira';
       const changeFor = checkout?.deliveryDetails?.changeFor ? `Troco para R$ ${checkout?.deliveryDetails?.changeFor}` : 'Sem troco';
       const paymentMethod = checkout?.deliveryDetails?.paymentMethod === 'card' ? 'Cartão' : `Dinheiro - ${changeFor}`
-      const order = checkout?.menuItems.map((item) => {
-        const extras = item?.extras?.map((extra) => {
-          return `${extra?.name} - ${formatFromMoney(extra?.price)}`
-        });
-        const sizes = item?.sizes?.map((size) => {
-          return `${size?.name} - ${formatFromMoney(size?.price)}`
-        });
-        const flavors = item?.flavorsPrices?.map((flavor) => {
-          return `${flavor?.name} - ${formatFromMoney(flavor?.discount)}`
-        });
-        let text = '';
-        if (extras?.length > 0) {
-          text += extras.join(', ');
-        }
-        if (sizes?.length > 0) {
-          text += sizes.join(', ');
-        }
-        if (flavors?.length > 0) {
-          text += flavors.join(', ');
-        }
-        return `${text}`
-      });
+      const formatMenuItem = (item) => {
+        const extras = item?.extras?.map(extra => `${extra?.name} - ${formatFromMoney(extra?.price)}`).join('\n');
+        const sizes = item?.sizes?.map(size => `${size?.name} - ${formatFromMoney(size?.price)}`).join('\n');
+        const flavors = item?.flavorsPrices?.map(flavor => `${flavor?.name} - ${formatFromMoney(flavor?.discount)}`).join('\n');
+        const pricipalProduct = `${item?.name} - ${formatFromMoney(item?.basePrice)}`;
+        let textParts = [];
+        if (pricipalProduct) textParts.push(pricipalProduct);
+        if (extras) textParts.push(extras);
+        if (sizes) textParts.push(sizes);
+        if (
+          flavors &&
+          flavors !== 'null' &&
+          flavors !== 'undefined' &&
+          flavors.length > 0 &&
+          flavors.indexOf('null') === -1 &&
+          flavors.indexOf('undefined') === -1 &&
+          !flavors.includes('null') &&
+          !flavors.includes('undefined')
+        ) textParts.push(flavors);
+      
+        return textParts.join('\n');
+      };
+      
+      const order = checkout?.menuItems.map(formatMenuItem).join('\n\n');
       
       const message = [
-        `Novo pedido de ${user?.name} no valor de ${formatFromMoney(checkout?.total)}`,
-        `Endereço: ${checkout?.streetAddress}, ${checkout?.number}, ${checkout?.neighborhood}`,
-        `Telefone: ${checkout?.phone}`,
-        `Detalhes da entrega: ${deliveryMess} - Pagamento em ${paymentMethod}`,
-        `Pedido:`,
-        `${order?.join(', ')}`,
-        `Total: ${formatFromMoney(checkout?.total)}`
+        `Novo pedido de *${user?.name}* no valor de *${formatFromMoney(checkout?.total)}*\n\nEndereço: *${checkout?.streetAddress}*, *${checkout?.number}*, *${checkout?.neighborhood}* - Telefone: *${checkout?.phone}*\n\nDetalhes da entrega:\n${deliveryMess} - Pagamento em *${paymentMethod}*\nPedido:\n${order}\n\nSubtotal: *${formatFromMoney(checkout?.subtotal)}*\nTaxa de entrega: *${formatFromMoney(checkout?.delivery)}*\nTotal: *${formatFromMoney(checkout?.total)}*`,
       ];
       await gzappy({
         phone: company?.phone,
         message
       });
       const messageForUser = [
-        `${user?.name}, seu pedido no estabelecimento ${checkout?.company_name} foi realizado com sucesso.`,
-        `Total: ${formatFromMoney(checkout?.total)}`,
-        `Acompanhe o status do seu pedido em: https://www.foodnoow.com.br/`,
-        `Qualquer dúvida, entre em contato com o estabelecimento pelo telefone ${company?.phone}`
+        `${user?.name}, seu pedido no estabelecimento ${checkout?.company_name} foi realizado com sucesso.\nTotal: ${formatFromMoney(checkout?.total)}`,
+        `Acompanhe o status do seu pedido em: https://www.foodnoow.com.br/\n\nQualquer dúvida, entre em contato com o estabelecimento pelo telefone ${company?.phone}`
       ];
       await gzappy({
         phone: checkout?.phone,
@@ -162,30 +156,22 @@ export default class CheckoutService {
     let message = []
     if (statusFound.id === 1) {
       message = [
-        `Pedido - ${checkout?.company_name}`,
-        `${checkout?.company_name}`,
-        `${checkout?.client}, estamos ${statusFound.name} seu pedido.`,
+        `Pedido - ${checkout?.company_name}\n${checkout?.client}, estamos ${statusFound.name} seu pedido.`,
       ]
     }
     if (statusFound.id === 2) {
       message = [
-        `Pedido - ${checkout?.company_name}`,
-        `${checkout?.company_name}`,
-        `${checkout?.client}, seu pedido está ${statusFound.name}.`,
+        `Pedido - ${checkout?.company_name}\n${checkout?.client}, seu pedido está ${statusFound.name}.`,
       ]
     }
     if (statusFound.id === 3) {
       message = [
-        `Pedido - ${checkout?.company_name}`,
-        `${checkout?.company_name}`,
-        `${checkout?.client}, seu pedido foi ${statusFound.name}.`,
+        `Pedido - ${checkout?.company_name}\n${checkout?.client}, seu pedido foi ${statusFound.name}.`,
       ]
     }
     if (statusFound.id === 4) {
       message = [
-        `Pedido - ${checkout?.company_name}`,
-        `${checkout?.company_name}`,
-        `${checkout?.client}, seu pedido foi ${statusFound.name}.`,
+        `Pedido - ${checkout?.company_name}\n${checkout?.client}, seu pedido foi ${statusFound.name}.`,
       ]
     }
 

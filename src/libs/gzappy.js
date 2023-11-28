@@ -1,5 +1,8 @@
 export const gzappy = async ({message, phone}) => {
 
+  if (process.env.NEXT_NODE_ENV === 'development') {
+    return {success: true}
+  }
   const response = await fetch(process.env.NEXT_GZAPPY_URL, {
     method: 'POST',
     headers: {

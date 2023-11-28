@@ -5,6 +5,7 @@ import UserService from "@/services/UserService";
 import {getServerSession} from "next-auth";
 import { checkLimiter } from "../config/limiter";
 import { response } from "@/libs/response";
+import CompanyService from "@/services/CompanyService";
 
 export async function PUT(req) {
   await checkLimiter(req);
@@ -75,7 +76,11 @@ export async function GET(req) {
 
   const user = await userService.find(filterUser);
   const userInfo = await userInfoService.find({email:user.email});
+  let company = {};
+  if (userInfo?.company_id) {
+    const companyService = new CompanyService();
+    company = await companyService.find({id:userInfo.company_id});
+  }
 
-  return response({...user, ...userInfo}, {req});
-
+  return response({...user, ...userInfo, company: company[0]}, {req});
 }

@@ -9,6 +9,7 @@ import {useContext, useState} from "react";
 
 function AuthLinks({status, userName}) {
   const handleSignOut = async () => {
+    localStorage.removeItem('address-foodnoow');
     await signOut({callbackUrl: '/', redirect: true});
   }
   if (status === 'authenticated') {

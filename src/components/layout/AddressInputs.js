@@ -6,34 +6,11 @@ export default function AddressInputs({addressProps,setAddressProp,disabled=fals
     if (typeof setChangeValues === 'undefined' || setChangeValues === null) {
       return
     }
-    if (
-      phone &&
-      streetAddress &&
-      number &&
-      neighborhood &&
-      complement &&
-      city
-    ) {
-      setChangeValues(false);
-    } else {
-      setChangeValues(true);
-    }
   }
 
   useEffect(() => {
     if (typeof setChangeValues === 'undefined' || setChangeValues === null) {
       return
-    }
-    if (
-      typeof setChangeValues !== null &&
-      addressProps.phone &&
-      addressProps.streetAddress &&
-      addressProps.number &&
-      addressProps.neighborhood &&
-      addressProps.complement &&
-      addressProps.city
-    ) {
-      setChangeValues(false);
     }
   }, [phone, streetAddress, city, number, neighborhood, complement])
 

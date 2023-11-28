@@ -10,11 +10,12 @@ import { useRouter } from "next/navigation";
 import {useContext, useEffect, useState} from "react";
 import moment from "moment";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 export default function CartPage() {
   const {cartProducts,removeCartProduct, clearCart} = useContext(CartContext);
   const [address, setAddress] = useState({});
-  const [disabled, setDisabled] = useState(true);
+  const [disabled, setDisabled] = useState(false);
   const [deliveryPrice, setDeliveryPrice] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [deliveryDefault, setDeliveryDefault] = useState(0);
@@ -25,6 +26,9 @@ export default function CartPage() {
   });
 
   const {data:profileData} = useProfile();
+  const session = useSession();
+  const userLoggged = session.data?.user;
+
   const router = useRouter();
 
   useEffect(() => {
@@ -35,9 +39,9 @@ export default function CartPage() {
     }
   }, []);
 
-  useEffect(() => {
+    useEffect(() => {
     if (profileData?.streetAddress) {
-      const {phone, streetAddress, neighborhood, number, complement, city} = profileData;
+      let {phone, streetAddress, neighborhood, number, complement, city} = profileData;
       const addressFromProfile = {
         phone,
         streetAddress,
@@ -50,21 +54,23 @@ export default function CartPage() {
       if (phone && streetAddress && neighborhood && number && complement && city) {
         setDisabled(false);
       }
+    } else {
+      const addressFromLocalStorage = JSON.parse(localStorage.getItem('address-foodnoow'));
+      if (addressFromLocalStorage) {
+        const addressFromProfile = {
+          phone: addressFromLocalStorage?.phone,
+          streetAddress: addressFromLocalStorage?.streetAddress,
+          neighborhood: addressFromLocalStorage?.neighborhood,
+          number: addressFromLocalStorage?.number,
+          complement: addressFromLocalStorage?.complement,
+          city: addressFromLocalStorage?.city
+        };
+        setAddress(addressFromProfile);
+      }
     }
-  }, [profileData]);
-
-  useEffect(() => {
-    if (cartProducts?.length > 0) {
-      setDeliveryPrice(cartProducts[0]?.delivery)
-      setDeliveryDefault(cartProducts[0]?.delivery)
-    }
-  }, [cartProducts])
-
-  useEffect(() => {
     if (cartProducts?.length > 0 && cartProducts[0]?.company_id) {
       fetch('/api/companies?id='+cartProducts[0]?.company_id).then(async (response) => {
         const company = await response.json();
-        console.log(company);
         if (company?.length > 0) {
           const now = moment();
           let openTime = moment(company[0]?.timeopen, 'HH:mm');
@@ -79,7 +85,14 @@ export default function CartPage() {
         }
       });
     }
-  })
+  }, [profileData]);
+
+  useEffect(() => {
+    if (cartProducts?.length > 0) {
+      setDeliveryPrice(cartProducts[0]?.delivery)
+      setDeliveryDefault(cartProducts[0]?.delivery)
+    }
+  }, [cartProducts])
 
   let subtotal = 0;
   for (const p of cartProducts) {
@@ -96,10 +109,12 @@ export default function CartPage() {
     }
 
     if (!profileData?.id) {
+      localStorage.setItem('address-foodnoow', JSON.stringify(address));
       router.push('/login');
-      alert('Faça login para continuar');
+      toast.error('Faça login para continuar');
       return;
     }
+
     const promise = new Promise((resolve, reject) => {
       if (!address.phone || !address.streetAddress || !address.neighborhood || !address.number || !address.complement || !address.city) {
         reject('Preencha todos os campos do endereço');
@@ -154,6 +169,7 @@ export default function CartPage() {
         if (response?.ok) {
           resolve();
           clearCart();
+          localStorage.removeItem('address-foodnoow');
           router.push('/orders');
         } else {
           reject('Erro ao processar o pedido');
@@ -181,11 +197,10 @@ export default function CartPage() {
     <section className="max-w-2xl mx-auto mt-8">
       <div className="text-center">
         <SectionHeaders mainHeader="Carrinho" />
-        {disabled && (
+        {!userLoggged?.email && (
           <p className="mt-4 bg-white shadow-md border border-gray-200 rounded-lg p-4 text-center text-sm md:text-base lg:text-lg">
-          Realize o seu cadastro no Foodnoow ou faça o login para continuar a colocar mais coisas no seu carrinho 😄
-        </p>
-        
+            Realize o seu cadastro no Foodnoow ou faça o login para continuar a colocar mais coisas no seu carrinho 😄
+          </p>
         )}
       </div>
       <div className="mt-8 grid gap-8 sm:grid-cols-1 md:grid-cols-2">

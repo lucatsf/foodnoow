@@ -74,8 +74,7 @@ export default function CartPage() {
         if (company?.length > 0) {
           const now = moment();
           let openTime = moment(company[0]?.timeopen, 'HH:mm');
-          let closeTime = moment(company[0]?.timeclose, 'HH:mm');
-        
+          let closeTime = moment(company[0]?.timeclose === '00:00' ? '23:59' : company[0]?.timeclose, 'HH:mm');
           // Se o horário de fechamento é antes do horário de abertura, 
           // ajusta o closeTime para o dia seguinte
           if (closeTime.isBefore(openTime)) {

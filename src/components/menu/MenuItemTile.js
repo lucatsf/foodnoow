@@ -11,8 +11,8 @@ export default function MenuItemTile({onAddToCart, ...item}) {
       <div className="text-center">
         <img src={image || '/not-image.png'} className="max-h-auto max-h-24 block mx-auto" alt={name}/>
       </div>
-      <h4 className="font-semibold text-xl my-3">{name}</h4>
-      <p className="text-gray-500 text-sm line-clamp-3">
+      <h4 className="font-semibold text-xl my-3 truncate">{name}</h4>
+      <p className="text-gray-500 text-sm line-clamp-3 h-20">
         {description}
       </p>
       <AddToCartButton

@@ -1,6 +1,7 @@
 'use client';
 import SectionHeaders from "@/components/layout/SectionHeaders";
 import MenuItem from "@/components/menu/MenuItem";
+import Image from "next/image";
 import {usePathname} from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -32,6 +33,15 @@ const PageOfCompany = () => {
     <section className="mt-8">
       <div className="text-center mb-6">
         <SectionHeaders mainHeader={company.name} />
+        <div className="mt-4 mb-4 flex justify-center">
+          <Image
+            className="rounded-lg"
+            src={company?.image}
+            alt={company?.name}
+            width={150}
+            height={150}
+          />
+        </div>
       </div>
       {categories?.length > 0 && categories.map(c => (
         <div key={c.id}>

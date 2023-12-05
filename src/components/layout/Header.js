@@ -76,7 +76,7 @@ export default function Header() {
           className="md:hidden p-4 bg-gray-200 rounded-lg mt-2 flex flex-col gap-2 text-center">
           <Link href={'/'}>Inicio</Link>
           {userName && (<Link href={'/orders'}>Meus Pedidos</Link>)}
-          <Link href={'/menu'}>Restaurantes</Link>
+          {/* <Link href={'/menu'}>Restaurantes</Link> */}
           <Link href={'/#about'}>Sobre</Link>
           <Link href={'/#contact'}>Contato</Link>
           <AuthLinks status={status} userName={userName} />
@@ -89,7 +89,7 @@ export default function Header() {
           
           <Link href={'/'}>Inicio</Link>
           {userName && (<Link href={'/orders'}>Pedidos</Link>)}
-          <Link href={'/menu'}>Restaurantes</Link>
+          {/* <Link href={'/menu'}>Restaurantes</Link> */}
           <Link href={'/#about'}>Sobre</Link>
           <Link href={'/#contact'}>Contato</Link>
         </nav>

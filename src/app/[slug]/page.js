@@ -63,6 +63,12 @@ const PageOfCompany = () => {
           <div>
             <h4 className="font-semibold text-xl my-3">{company?.name}</h4>
             <p className="text-gray-500 text-sm">
+              {(company?.address && company?.number && company?.neighborhood && company?.city) &&(
+                `${company?.address}, ${company?.number} - ${company?.neighborhood} ${company?.city}`
+              )}
+            </p>
+
+            <p className="text-gray-500 text-sm">
               Abre às {company?.timeopen} - Fecha às {company?.timeclose}
             </p>
             <p className={`font-semibold ${statusClass}`}>

@@ -13,6 +13,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'lucatsf-food-now-one.s3.us-east-2.amazonaws.com',
+      },
+      {
+        protocol: 'https',
         hostname: 'https://foodnoow.com.br',
       },
       {

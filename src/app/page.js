@@ -27,15 +27,15 @@ export default function Home() {
         </div>
       </section>
       <section className="text-center my-8" id="contact">
-        {/* <SectionHeaders
+        <SectionHeaders
           subHeader={'Não hesite em nos contatar'}
           mainHeader={'Contato'}
         />
         <div className="mt-8">
           <a className="text-4xl underline text-gray-500" href="tel:+46738123123">
-            (47) 99142-7087
+            (47) 9142-7087
           </a>
-        </div> */}
+        </div>
       </section>
     </>
   )

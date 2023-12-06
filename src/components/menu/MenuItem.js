@@ -147,7 +147,7 @@ export default function MenuItem(menuItem) {
                 src={image || '/not-image.png'}
                 alt={name}
                 width={300} height={200}
-                className="mx-auto" />
+                className="mx-auto rounded-lg" />
               <h2 className="text-lg font-bold text-center mb-2">{name}</h2>
               <p className="text-center text-gray-500 text-sm mb-2">
                 {description}

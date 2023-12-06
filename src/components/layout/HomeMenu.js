@@ -9,7 +9,8 @@ export default function HomeMenu() {
     fetch('/api/companies').then(res => {
       res.json().then(companies => {
         const sortedCompanies = companies.sort((a, b) => b.numberOfOrders - a.numberOfOrders);
-        setBestSellers(sortedCompanies);
+        const bestSellers = sortedCompanies.slice(0, 3);
+        setBestSellers(bestSellers);
       });
     });
   }, []);

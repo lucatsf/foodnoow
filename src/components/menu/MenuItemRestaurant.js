@@ -1,26 +1,21 @@
 import Link from "next/link";
-import moment from 'moment';
+import { isRestaurantOpen } from "@/libs/restaurantOpen";
 
 export default function MenuItemRestaurant(restaurants) {
   const {
-    image, name, timeopen, timeclose, slug
+    image, name, timeopen, timeclose, slug, dayClosed
   } = restaurants;
 
-  const isRestaurantOpen = () => {
-    const now = moment();
-    const openTime = moment(timeopen, 'HH:mm');
-    let closeTime = moment(timeclose === '00:00' ? '23:59' : timeclose, 'HH:mm');
-  
-    // Se o horário de fechamento é antes do horário de abertura, 
-    // ajusta o closeTime para o dia seguinte
-    if (closeTime.isBefore(openTime)) {
-      closeTime.add(1, 'day');
-    }
-    return now.isBetween(openTime, closeTime);
-  };
-
-  const restaurantStatus = isRestaurantOpen() ? 'Aberto' : 'Fechado';
-  const statusClass = isRestaurantOpen() ? 'text-green-500' : 'text-red-500';
+  const restaurantStatus = isRestaurantOpen({
+    timeopen: timeopen,
+    timeclose: timeclose,
+    dayClosed: dayClosed
+  }) ? 'Aberto' : 'Fechado';
+  const statusClass = isRestaurantOpen({
+    timeopen: timeopen,
+    timeclose: timeclose,
+    dayClosed: dayClosed
+  }) ? 'text-green-500' : 'text-red-500';
 
   return (
     <>

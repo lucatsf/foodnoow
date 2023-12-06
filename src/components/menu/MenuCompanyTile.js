@@ -1,24 +1,20 @@
-import moment from "moment/moment";
+import { isRestaurantOpen } from "@/libs/restaurantOpen";
 import Link from "next/link";
 
 export default function MenuCompanyTile({onAddToCart, ...item}) {
-  const {image, name, timeopen, timeclose
+  const {image, name, timeopen, timeclose, dayClosed
   } = item;
-  const isRestaurantOpen = () => {
-    const now = moment();
-    const openTime = moment(item?.timeopen, 'HH:mm');
-    let closeTime = moment(item?.timeclose === '00:00' ? '23:59' : item?.timeclose, 'HH:mm');
-  
-    // Se o horário de fechamento é antes do horário de abertura, 
-    // ajusta o closeTime para o dia seguinte
-    if (closeTime.isBefore(openTime)) {
-      closeTime.add(1, 'day');
-    }
-    return now.isBetween(openTime, closeTime);
-  };
 
-  const restaurantStatus = isRestaurantOpen() ? 'Aberto' : 'Fechado';
-  const statusClass = isRestaurantOpen() ? 'text-green-500' : 'text-red-500';
+  const restaurantStatus = isRestaurantOpen({
+    timeopen: timeopen,
+    timeclose: timeclose,
+    dayClosed: dayClosed
+  }) ? 'Aberto' : 'Fechado';
+  const statusClass = isRestaurantOpen({
+    timeopen: timeopen,
+    timeclose: timeclose,
+    dayClosed: dayClosed
+  }) ? 'text-green-500' : 'text-red-500';
   return (
     <div className="bg-gray-200 p-4 rounded-lg text-center cursor-pointer
       group hover:bg-white hover:shadow-md hover:shadow-black/25 transition-all">

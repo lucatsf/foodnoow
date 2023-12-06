@@ -1,7 +1,7 @@
 'use client';
 import SectionHeaders from "@/components/layout/SectionHeaders";
 import MenuItem from "@/components/menu/MenuItem";
-import moment from "moment/moment";
+import { isRestaurantOpen } from "@/libs/restaurantOpen";
 import Image from "next/image";
 import {usePathname} from "next/navigation";
 import { useEffect, useState } from "react";
@@ -30,21 +30,16 @@ const PageOfCompany = () => {
     });
   }, []);
 
-  const isRestaurantOpen = () => {
-    const now = moment();
-    const openTime = moment(company?.timeopen, 'HH:mm');
-    let closeTime = moment(company.timeclose === '00:00' ? '23:59' : company?.timeclose, 'HH:mm');
-  
-    // Se o horário de fechamento é antes do horário de abertura, 
-    // ajusta o closeTime para o dia seguinte
-    if (closeTime.isBefore(openTime)) {
-      closeTime.add(1, 'day');
-    }
-    return now.isBetween(openTime, closeTime);
-  };
-
-  const restaurantStatus = isRestaurantOpen() ? 'Aberto' : 'Fechado';
-  const statusClass = isRestaurantOpen() ? 'text-green-500' : 'text-red-500';
+  const restaurantStatus = isRestaurantOpen({
+    timeopen: company?.timeopen,
+    timeclose: company?.timeclose,
+    dayClosed: company?.dayClosed
+  }) ? 'Aberto' : 'Fechado';
+  const statusClass = isRestaurantOpen({
+    timeopen: company?.timeopen,
+    timeclose: company?.timeclose,
+    dayClosed: company?.dayClosed
+  }) ? 'text-green-500' : 'text-red-500';
 
   return (
     <section className="mt-8">

@@ -32,9 +32,7 @@ export async function middleware(req) {
     '/api/users',
   ];
 
-  if (process.env.NEXT_NODE_ENV === 'production') {
-    sendLogToDiscord('log', `Acesso a rota ${url.pathname}, ${req.method}, ${req.ip}`);
-  }
+  sendLogToDiscord('log', `Acesso \n${url.pathname}\n${req.method}\nIP:${req.ip}`);
 
   if (!onlyAuthenticated.includes(url.pathname)) {
     return NextResponse.next();

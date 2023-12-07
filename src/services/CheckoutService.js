@@ -97,8 +97,18 @@ export default class CheckoutService {
         const pricipalProduct = `${item?.name} - ${formatFromMoney(item?.basePrice)}`;
         let textParts = [];
         if (pricipalProduct) textParts.push(pricipalProduct);
-        if (extras) textParts.push(extras);
-        if (sizes) textParts.push(sizes);
+        if (
+          extras &&
+          extras !== 'null' &&
+          extras !== 'undefined' &&
+          extras.length > 0
+        ) textParts.push(extras);
+        if (
+          sizes &&
+          sizes !== 'null' &&
+          sizes !== 'undefined' &&
+          sizes.length > 0
+        ) textParts.push(sizes);
         if (
           flavors &&
           flavors !== 'null' &&

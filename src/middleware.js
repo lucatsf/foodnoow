@@ -1,6 +1,7 @@
 // export {default} from "next-auth/middleware";
 import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
+import { sendLogToDiscord } from './libs/sendLogToDiscord';
 
 const allowedOrigins = process.env.NEXT_NODE_ENV === 'production' 
   ? [
@@ -30,6 +31,10 @@ export async function middleware(req) {
     '/api/menu-items',
     '/api/users',
   ];
+
+  if (process.env.NEXT_NODE_ENV === 'production') {
+    sendLogToDiscord('log', `Acesso a rota ${url.pathname}, ${req.method}, ${req.ip}`);
+  }
 
   if (!onlyAuthenticated.includes(url.pathname)) {
     return NextResponse.next();

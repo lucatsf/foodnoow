@@ -5,6 +5,7 @@ import { Company } from "@/models/Company";
 import { userAuth } from "@/app/api/auth/[...nextauth]/route";
 import { gzappy } from "@/libs/gzappy";
 import { formatFromMoney } from "@/libs/formatInput";
+import { sendLogToDiscord } from "@/libs/sendLogToDiscord";
 
 const { Checkout } = require("@/models/Checkout");
 
@@ -117,6 +118,12 @@ export default class CheckoutService {
       const message = [
         `Novo pedido de *${user?.name.trim()}* no valor de *${formatFromMoney(checkout?.total)}*\n\nEndereço: *${checkout?.streetAddress}, ${checkout?.number}, ${checkout?.neighborhood}* - Telefone: *${checkout?.phone}*\n\nDetalhes da entrega:\n${deliveryMess} - Pagamento em *${paymentMethod}*\nPedido:\n${order}\n\nSubtotal: *${formatFromMoney(checkout?.subtotal)}*\nTaxa de entrega: *${formatFromMoney(checkout?.delivery)}*\nTotal: *${formatFromMoney(checkout?.total)}*`,
       ];
+      if (process.env.NEXT_NODE_ENV === 'production') {
+        sendLogToDiscord(
+          'checkout', 
+          `Empresa: ${checkout?.company_name} \nID: ${company?.id} \n\nNovo pedido de *${user?.name.trim()}* no valor de *${formatFromMoney(checkout?.total)}*\n\nEndereço: *${checkout?.streetAddress}, ${checkout?.number}, ${checkout?.neighborhood}* - Telefone: *${checkout?.phone}*\n\nDetalhes da entrega:\n${deliveryMess} - Pagamento em *${paymentMethod}*\nPedido:\n${order}\n\nSubtotal: *${formatFromMoney(checkout?.subtotal)}*\nTaxa de entrega: *${formatFromMoney(checkout?.delivery)}*\nTotal: *${formatFromMoney(checkout?.total)}*`
+        );
+      }
       await gzappy({
         phone: company?.phone,
         message

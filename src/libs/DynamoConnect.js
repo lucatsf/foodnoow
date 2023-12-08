@@ -1,4 +1,3 @@
-// Importar o Dynamoose
 import dynamoose from "dynamoose";
 
 // Verificar as variáveis de ambiente para AWS
@@ -14,6 +13,16 @@ const ddbConfig = {
     secretAccessKey: process.env.NEXT_AUTH_AWS_SECRET_KEY,
   },
 };
+
+// Se estiver em ambiente de desenvolvimento, use o DynamoDB Local
+if (process.env.NEXT_NODE_ENV === 'development') {
+  ddbConfig.endpoint = process.env.NEXT_DYNAMODB_ENDPOINT; // Isso deve apontar para o DynamoDB Local
+  ddbConfig.hostname = process.env.NEXT_DYNAMODB_ENDPOINT;
+  ddbConfig.credentials = { // Credenciais fictícias para o DynamoDB Local
+    accessKeyId: 'fakeMyKeyId',
+    secretAccessKey: 'fakeSecretAccessKey'
+  };
+}
 
 // Inicializar a instância do DynamoDB
 const ddb = new dynamoose.aws.ddb.DynamoDB(ddbConfig);

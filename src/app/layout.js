@@ -1,4 +1,5 @@
 import {AppProvider} from "@/components/AppContext";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import Header from "@/components/layout/Header";
 import { Roboto } from 'next/font/google'
 import './globals.css'
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
             <Toaster />
             <Header />
             {children}
+            <SpeedInsights />
             <footer className="border-t p-8 text-center text-gray-500 mt-16">
               &copy; 2023 All rights reserved
             </footer>

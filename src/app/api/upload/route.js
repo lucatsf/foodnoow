@@ -14,7 +14,7 @@ export async function POST(req) {
     const file = data.get('file');
     const companyName = user?.company?.name ? user?.company?.name.toLowerCase().replace(' ', '-') : false;
     const companyFolder = companyName ? `${companyName}/${local}` : '';
-    const folder = user?.company?.name ? companyFolder : local;
+    let folder = user?.company?.name ? companyFolder : local;
     const s3Client = new S3Client({
       region: 'us-east-2',
       credentials: {
@@ -24,6 +24,11 @@ export async function POST(req) {
     });
 
     const ext = file.name.split('.').pop();
+
+    if (process.env.NEXT_NODE_ENV === 'development') {
+      folder = `dev/${folder}`
+    }
+
     const newFileName = `${folder}/${uuid()}.${ext}`;
 
     const chunks = [];

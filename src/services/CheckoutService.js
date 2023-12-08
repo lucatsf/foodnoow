@@ -97,8 +97,18 @@ export default class CheckoutService {
         const pricipalProduct = `${item?.name} - ${formatFromMoney(item?.basePrice)}`;
         let textParts = [];
         if (pricipalProduct) textParts.push(pricipalProduct);
-        if (extras) textParts.push(extras);
-        if (sizes) textParts.push(sizes);
+        if (
+          extras &&
+          extras !== 'null' &&
+          extras !== 'undefined' &&
+          extras.length > 0
+        ) textParts.push(extras);
+        if (
+          sizes &&
+          sizes !== 'null' &&
+          sizes !== 'undefined' &&
+          sizes.length > 0
+        ) textParts.push(sizes);
         if (
           flavors &&
           flavors !== 'null' &&
@@ -118,12 +128,11 @@ export default class CheckoutService {
       const message = [
         `Novo pedido de *${user?.name.trim()}* no valor de *${formatFromMoney(checkout?.total)}*\n\nEndereço: *${checkout?.streetAddress}, ${checkout?.number}, ${checkout?.neighborhood}* - Telefone: *${checkout?.phone}*\n\nDetalhes da entrega:\n${deliveryMess} - Pagamento em *${paymentMethod}*\nPedido:\n${order}\n\nSubtotal: *${formatFromMoney(checkout?.subtotal)}*\nTaxa de entrega: *${formatFromMoney(checkout?.delivery)}*\nTotal: *${formatFromMoney(checkout?.total)}*`,
       ];
-      if (process.env.NEXT_NODE_ENV === 'production') {
-        sendLogToDiscord(
-          'checkout', 
-          `Empresa: ${checkout?.company_name} \nID: ${company?.id} \n\nNovo pedido de *${user?.name.trim()}* no valor de *${formatFromMoney(checkout?.total)}*\n\nEndereço: *${checkout?.streetAddress}, ${checkout?.number}, ${checkout?.neighborhood}* - Telefone: *${checkout?.phone}*\n\nDetalhes da entrega:\n${deliveryMess} - Pagamento em *${paymentMethod}*\nPedido:\n${order}\n\nSubtotal: *${formatFromMoney(checkout?.subtotal)}*\nTaxa de entrega: *${formatFromMoney(checkout?.delivery)}*\nTotal: *${formatFromMoney(checkout?.total)}*`
-        );
-      }
+
+      sendLogToDiscord(
+        'checkout', 
+        `Empresa: ${checkout?.company_name} \nID: ${company?.id} \n\nNovo pedido de *${user?.name.trim()}* no valor de *${formatFromMoney(checkout?.total)}*\n\nEndereço: *${checkout?.streetAddress}, ${checkout?.number}, ${checkout?.neighborhood}* - Telefone: *${checkout?.phone}*\n\nDetalhes da entrega:\n${deliveryMess} - Pagamento em *${paymentMethod}*\nPedido:\n${order}\n\nSubtotal: *${formatFromMoney(checkout?.subtotal)}*\nTaxa de entrega: *${formatFromMoney(checkout?.delivery)}*\nTotal: *${formatFromMoney(checkout?.total)}*`
+      );
       await gzappy({
         phone: company?.phone,
         message
@@ -132,6 +141,7 @@ export default class CheckoutService {
         `${user?.name}, seu pedido no estabelecimento ${checkout?.company_name} foi realizado com sucesso.\nTotal: ${formatFromMoney(checkout?.total)}`,
         `Acompanhe o status do seu pedido em: https://www.foodnoow.com.br/\n\nQualquer dúvida, entre em contato com o estabelecimento pelo telefone ${company?.phone}`
       ];
+
       await gzappy({
         phone: checkout?.phone,
         message: messageForUser

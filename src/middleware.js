@@ -32,7 +32,7 @@ export async function middleware(req) {
     '/api/users',
   ];
 
-  sendLogToDiscord('log', `Acesso \n${url.pathname}\n${req.method}\nIP:${req.ip}`);
+  sendLogToDiscord('log', `Acesso \n${req.method}\n${url.pathname}\nIP:${req.ip}`);
 
   if (!onlyAuthenticated.includes(url.pathname)) {
     return NextResponse.next();

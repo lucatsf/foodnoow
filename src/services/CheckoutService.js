@@ -141,6 +141,7 @@ export default class CheckoutService {
         `${user?.name}, seu pedido no estabelecimento ${checkout?.company_name} foi realizado com sucesso.\nTotal: ${formatFromMoney(checkout?.total)}`,
         `Acompanhe o status do seu pedido em: https://www.foodnoow.com.br/\n\nQualquer dúvida, entre em contato com o estabelecimento pelo telefone ${company?.phone}`
       ];
+
       await gzappy({
         phone: checkout?.phone,
         message: messageForUser

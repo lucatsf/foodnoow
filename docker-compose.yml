@@ -1,0 +1,12 @@
+version: '3.5'
+services:
+  dynamodb:
+    container_name: foodnoow-dynamodb-db
+    image: amazon/dynamodb-local
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath /data"
+    volumes:
+      - ./dynamodb-data:/data
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"

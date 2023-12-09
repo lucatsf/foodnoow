@@ -49,7 +49,6 @@ export default class CheckoutService {
         throw new Error('O produto não tem um item de menu associado');
       }
       subtotal += this.cartProductPrice(cartProduct);
-      delete cartProduct.size;
     }
 
     const company = await Company.get(companyId);
@@ -92,9 +91,9 @@ export default class CheckoutService {
       const paymentMethod = checkout?.deliveryDetails?.paymentMethod === 'card' ? 'Cartão' : `Dinheiro - ${changeFor}`
       const formatMenuItem = (item) => {
         const extras = item?.extras?.map(extra => `${extra?.name} - ${formatFromMoney(extra?.price)}`).join('\n');
-        const sizes = item?.sizes?.map(size => `${size?.name} - ${formatFromMoney(size?.price)}`).join('\n');
         const flavors = item?.flavorsPrices?.map(flavor => `${flavor?.name} - ${formatFromMoney(flavor?.discount)}`).join('\n');
         const pricipalProduct = `${item?.name} - ${formatFromMoney(item?.basePrice)}`;
+
         let textParts = [];
         if (pricipalProduct) textParts.push(pricipalProduct);
         if (
@@ -103,12 +102,7 @@ export default class CheckoutService {
           extras !== 'undefined' &&
           extras.length > 0
         ) textParts.push(extras);
-        if (
-          sizes &&
-          sizes !== 'null' &&
-          sizes !== 'undefined' &&
-          sizes.length > 0
-        ) textParts.push(sizes);
+        if (item?.size) textParts.push(`${item?.size?.name} - ${formatFromMoney(item?.size?.price)}`);
         if (
           flavors &&
           flavors !== 'null' &&
@@ -122,9 +116,9 @@ export default class CheckoutService {
       
         return textParts.join('\n');
       };
-      
+
       const order = checkout?.menuItems.map(formatMenuItem).join('\n\n');
-      
+
       const message = [
         `Novo pedido de *${user?.name.trim()}* no valor de *${formatFromMoney(checkout?.total)}*\n\nEndereço: *${checkout?.streetAddress}, ${checkout?.number}, ${checkout?.neighborhood}* - Telefone: *${checkout?.phone}*\n\nDetalhes da entrega:\n${deliveryMess} - Pagamento em *${paymentMethod}*\nPedido:\n${order}\n\nSubtotal: *${formatFromMoney(checkout?.subtotal)}*\nTaxa de entrega: *${formatFromMoney(checkout?.delivery)}*\nTotal: *${formatFromMoney(checkout?.total)}*`,
       ];

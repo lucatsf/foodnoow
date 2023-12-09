@@ -1,3 +1,4 @@
+import { formatPhoneNumber } from "@/libs/formatPhoneNumber";
 import { useEffect } from "react";
 
 export default function AddressInputs({addressProps,setAddressProp,disabled=false, setChangeValues}) {
@@ -20,9 +21,10 @@ export default function AddressInputs({addressProps,setAddressProp,disabled=fals
       <input
         disabled={disabled}
         type="tel" placeholder="Telefone"
-        value={phone || ''} onChange={ev => {
-          setAddressProp('phone', ev.target.value);
-          changeValues();
+        value={formatPhoneNumber(phone) || ''}
+        onChange={ev => {
+          const formattedPhoneNumber = formatPhoneNumber(ev.target.value);
+          setAddressProp('phone', formattedPhoneNumber);
         }}
         onBlur={changeValues}
       />

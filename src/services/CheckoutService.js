@@ -6,6 +6,7 @@ import { userAuth } from "@/app/api/auth/[...nextauth]/route";
 import { gzappy } from "@/libs/gzappy";
 import { formatFromMoney } from "@/libs/formatInput";
 import { sendLogToDiscord } from "@/libs/sendLogToDiscord";
+import { isValidPhoneNumber } from "@/libs/formatPhoneNumber";
 
 const { Checkout } = require("@/models/Checkout");
 
@@ -33,6 +34,9 @@ export default class CheckoutService {
     }
     if (!address?.phone) {
       throw new Error('Telefone não informado');
+    }
+    if (!isValidPhoneNumber(address?.phone)) {
+      throw new Error('Telefone inválido');
     }
     for (const cartProduct of menuItems) {
       if (!companyId) {

@@ -11,6 +11,7 @@ import {useContext, useEffect, useState} from "react";
 import moment from "moment";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
+import { isValidPhoneNumber } from "@/libs/formatPhoneNumber";
 
 export default function CartPage() {
   const {cartProducts,removeCartProduct, clearCart} = useContext(CartContext);
@@ -157,6 +158,10 @@ export default function CartPage() {
       //     }
       //   }
       // })
+      if (!isValidPhoneNumber(address.phone)) {
+        reject('Telefone inválido');
+        return;
+      }
 
       fetch('/api/checkout', {
         method: 'POST',

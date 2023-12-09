@@ -16,6 +16,7 @@
     "@vercel/speed-insights": "^1.0.0",
     "bcrypt": "^5.1.1",
     "dynamoose": "^3.2.1",
+    "google-libphonenumber": "^3.2.33",
     "limiter": "^2.1.0",
     "moment": "^2.29.4",
     "mongodb": "^6.3.0",

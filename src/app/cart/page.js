@@ -195,7 +195,7 @@ export default function CartPage() {
   }
 
   return (
-    <section className="max-w-2xl mx-auto mt-8">
+    <section className="max-w-4xl mx-auto mt-8">
       <div className="text-center">
         <SectionHeaders mainHeader="Carrinho" />
         {!userLoggged?.email && (

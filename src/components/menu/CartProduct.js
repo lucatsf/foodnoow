@@ -11,11 +11,11 @@ export default function CartProduct({indexProduct,product,onRemove}) {
       </div>
       <div className="grow">
         <h3 className="font-semibold">
-          {product?.name}
+          {product?.name} <label className="text-sm text-gray-500">{formatFromMoney(product?.basePrice)}</label>
         </h3>
         {product?.size && (
-          <div className="text-sm">
-            Tamanho: <span>{product?.size?.name}</span>
+          <div className="text-sm text-gray-500">
+            {product?.size?.name} {formatFromMoney(product?.size?.price)}
           </div>
         )}
         {product?.extras?.length > 0 && (

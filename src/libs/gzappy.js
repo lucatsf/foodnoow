@@ -1,6 +1,7 @@
 export const gzappy = async ({message, phone}) => {
   try {
-    if (process.env.NEXT_NODE_ENV === 'production') {
+    if (process.env.NEXT_NODE_ENV === 'development') {
+      phone = phone.replace(/\D/g, '');
       const response = await fetch(process.env.NEXT_GZAPPY_URL, {
         method: 'POST',
         headers: {

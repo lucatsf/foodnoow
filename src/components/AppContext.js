@@ -66,8 +66,26 @@ export function AppProvider({children, session}) {
         return;
       }
     }
+
+    const productAdd = {
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      image: product.image,
+      basePrice: product.basePrice,
+      company_id: product.company_id,
+      category_id: product.category_id,
+      categoryName: product.categoryName,
+      createdAt: product.createdAt,
+      updatedAt: product.updatedAt,
+      delivery: product.delivery,
+      size,
+      extras,
+      flavorsPrices
+    };
+
     setCartProducts(prevProducts => {
-      const cartProduct = {...product, size, extras, flavorsPrices};
+      const cartProduct = {...productAdd}
       const newProducts = [...prevProducts, cartProduct];
       saveCartProductsToLocalStorage(newProducts);
       return newProducts;

@@ -1,6 +1,5 @@
 import {companyOfUser, isAdmin, userAuth} from "@/app/api/auth/[...nextauth]/route";
 import { authOptions } from "@/libs/auth";
-import mongoose from "mongoose";
 import {getServerSession} from "next-auth";
 import { checkLimiter } from "../config/limiter";
 import { response } from "@/libs/response";

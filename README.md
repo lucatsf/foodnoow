@@ -4,7 +4,7 @@
 
 # FoodNoow
 
-Bem-vindo ao repositório do FoodNoow, uma plataforma inovadora para restaurantes divulgarem seus menus e serviços. Este projeto é desenvolvido com tecnologias de ponta para oferecer uma experiência de usuário excepcional e uma interface administrativa eficiente.
+Bem-vindo ao repositório do FoodNoow, uma plataforma inovadora para restaurantes divulgarem seus menus e serviços. Este projeto é desenvolvido com tecnologias de ponta para oferecer uma experiência de usuário excepcional e uma interface administrativa eficiente. Para acessar entre em [FoodNoow](https://www.foodnoow.com.br)
 
 ## Tecnologias Utilizadas
 
